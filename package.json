@@ -10,6 +10,7 @@
         "prepare": "husky install"
     },
     "dependencies": {
+        "@hapi/joi": "^17.1.1",
         "auto-bind": "4",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.3.1",

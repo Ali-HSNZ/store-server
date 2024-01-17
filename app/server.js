@@ -4,6 +4,7 @@ const path = require('path')
 const { AllRoutes } = require('./router/router')
 const morgan = require('morgan')
 const createError = require('http-errors')
+const { swaggerConfig } = require('./config/swagger.config')
 
 class Application {
     #App = express()
@@ -23,6 +24,7 @@ class Application {
         this.#App.use(express.json())
         this.#App.use(express.urlencoded({ extended: true }))
         this.#App.use(express.static(path.join(__dirname, '..', 'public')))
+        swaggerConfig(this.#App)
     }
     createServer() {
         this.#App.use(morgan('dev'))

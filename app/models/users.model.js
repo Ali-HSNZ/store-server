@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema({
     first_name: { type: String },
     last_name: { type: String },
-    userName: { type: String },
+    userName: { type: String, lowercase: true },
     phone: { type: String },
-    email: { type: String },
+    email: { type: String, lowercase: true },
     password: { type: String },
     otp: {
         type: Object,

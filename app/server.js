@@ -1,7 +1,8 @@
 const express = require('express')
-const { connect } = require('mongoose')
+const mongoose = require('mongoose')
 const path = require('path')
 const { AllRoutes } = require('./router/router')
+const morgan = require('morgan')
 
 class Application {
     #App = express()
@@ -23,6 +24,7 @@ class Application {
         this.#App.use(express.static(path.join(__dirname, '..', 'public')))
     }
     createServer() {
+        this.#App.use(morgan('dev'))
         const http = require('http')
         http.createServer(this.#App).listen(this.#PORT, () => {
             console.log(`Server Started on port: ${this.#PORT}`)
@@ -30,13 +32,21 @@ class Application {
     }
 
     connectToMongoDB() {
-        connect(this.#DB_URI)
+        mongoose
+            .connect(this.#DB_URI)
             .then(() => {
                 console.log('Connected to DB')
             })
-            .catch(() => {
-                console.log('Failed to connect to MongoDB')
+            .catch((err) => {
+                console.log(err?.message)
             })
+        mongoose.connection.on('disconnected', () => {
+            console.log('DB disconnected')
+        })
+        process.on('SIGINT', async () => {
+            await mongoose.connection.close()
+            process.exit(0)
+        })
     }
     createRoutes() {
         this.#App.use(AllRoutes)

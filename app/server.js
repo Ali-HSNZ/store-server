@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 const { AllRoutes } = require('./router/router')
 const morgan = require('morgan')
+const createError = require('http-errors')
 
 class Application {
     #App = express()
@@ -54,19 +55,19 @@ class Application {
     errorHandling() {
         // Not found
         this.#App.use((req, res, next) => {
-            res.status(404).json({
-                statusCode: 404,
-                message: 'آدرس مورد نظر یافت نشد',
-            })
+            next(createError.NotFound('آدرس مورد نظر یافت نشد'))
         })
 
         // Error
         this.#App.use((err, req, res, next) => {
-            const statusCode = err.status || 500
-            const message = err.message || 'InternalServerError'
+            const serverError = createError.InternalServerError()
+            const statusCode = err.status || serverError.status
+            const message = err.message || serverError.message
             return res.status(statusCode).json({
-                status: statusCode,
-                message,
+                errors: {
+                    status: statusCode,
+                    message,
+                },
             })
         })
     }

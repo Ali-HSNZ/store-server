@@ -33,7 +33,6 @@ class UserAuthController extends Controller {
         try {
             await checkOtpSchema.validateAsync(req.body)
             const { mobile, code } = req.body
-            console.log(typeof code)
             const user = await UserModel.findOne({ mobile })
             if (!user) {
                 throw createHttpError.NotFound('کاربر یافت نشد')

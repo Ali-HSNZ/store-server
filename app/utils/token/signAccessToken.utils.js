@@ -7,9 +7,8 @@ const signAccessToken = (userId) => {
         const user = await UserModel.findById(userId)
         const payload = {
             mobile: user.mobile,
-            userID: user._id,
         }
-        const secretKey = process.env.TOKEN_SECRET_KEY
+        const secretKey = process.env.ACCESS_TOKEN_SECRET_KEY
         const option = {
             expiresIn: '1h',
         }

@@ -5,7 +5,7 @@ const { AllRoutes } = require('./router/router')
 const morgan = require('morgan')
 const createError = require('http-errors')
 const { swaggerConfig } = require('./config/swagger.config')
-
+const cors = require('cors')
 class Application {
     #App = express()
     #DB_URI
@@ -21,6 +21,7 @@ class Application {
         this.errorHandling()
     }
     configApplication() {
+        this.#App.use(cors())
         this.#App.use(express.json())
         this.#App.use(express.urlencoded({ extended: true }))
         this.#App.use(express.static(path.join(__dirname, '..', 'public')))

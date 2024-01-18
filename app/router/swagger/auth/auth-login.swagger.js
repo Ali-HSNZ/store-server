@@ -61,3 +61,29 @@
  *              description: Internal server error
  *
  */
+
+/**
+ * @swagger
+ * /user/refresh-token:
+ *  post:
+ *      tags:
+ *          -   Auth
+ *      summary: send refresh token for get new access token and refresh token
+ *      description: fresh token
+ *      parameters:
+ *      -   name: refreshToken
+ *          in: formData
+ *          example: <Your_Access_Token>
+ *          required: true
+ *          type: string
+ *      responses:
+ *          201:
+ *              description: Success
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthorized
+ *          500:
+ *              description: Internal server error
+ *
+ */

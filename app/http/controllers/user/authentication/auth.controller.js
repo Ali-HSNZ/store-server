@@ -6,6 +6,8 @@ const Controller = require('../../controller')
 const { timeDifference } = require('../../../../utils/time/time-difference.utils')
 const moment = require('moment')
 const { signAccessToken } = require('../../../../utils/token/signAccessToken.utils')
+const { verifyAccessToken } = require('../../../../utils/token/verifyRefreshToken.utils')
+const { signRefreshToken } = require('../../../../utils/token/signRefreshToken.utils')
 
 class UserAuthController extends Controller {
     async getOtp(req, res, next) {
@@ -44,8 +46,25 @@ class UserAuthController extends Controller {
                 throw createHttpError.Unauthorized('کد شما منقضی شده است')
             }
             const accessToken = await signAccessToken(user._id)
+            const newRefreshToken = await signRefreshToken(user._id)
+
             return res.json({
-                data: { accessToken },
+                data: { accessToken, refreshToken: newRefreshToken },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async refreshToken(req, res, next) {
+        try {
+            const { refreshToken } = req.body
+            const mobile = await verifyAccessToken(refreshToken)
+            const user = await UserModel.findOne({ mobile })
+            const accessToken = await signAccessToken(user._id)
+            const newRefreshToken = await signRefreshToken(user._id)
+            return res.json({
+                data: { accessToken, refreshToken: newRefreshToken },
             })
         } catch (error) {
             next(error)

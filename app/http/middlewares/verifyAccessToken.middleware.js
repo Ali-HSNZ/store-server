@@ -10,10 +10,11 @@ const verifyAccessToken = (req, res, next) => {
         const secretKey = process.env.ACCESS_TOKEN_SECRET_KEY
 
         return jwt.verify(token, secretKey, async (err, payload) => {
-            const { mobile } = payload || {}
             if (err) {
                 return next(createHttpError.Unauthorized('وارد حساب کاربری خود شوید'))
             }
+
+            const { mobile } = payload || {}
 
             const user = await UserModel.findOne({ mobile }, { password: 0, otp: 0 })
             if (!user) {

@@ -16,6 +16,7 @@ class Application {
 
         this.configApplication()
         this.connectToMongoDB()
+        this.initRedis()
         this.createServer()
         this.createRoutes()
         this.errorHandling()
@@ -52,6 +53,10 @@ class Application {
             process.exit(0)
         })
     }
+    initRedis() {
+        require('./utils/redis/init.redis')
+    }
+
     createRoutes() {
         this.#App.use(AllRoutes)
     }

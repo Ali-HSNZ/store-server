@@ -1,3 +1,3 @@
-const CONSTANTS = require('./constants.json')
+const CONSTANTS = require('./constants')
 
 module.exports = { CONSTANTS }

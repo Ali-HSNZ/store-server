@@ -1,9 +1,0 @@
-{
-    "ROLES": {
-        "USER": "USER",
-        "ADMIN": "ADMIN",
-        "WRITER": "WRITER",
-        "TEACHER": "TEACHER",
-        "SUPPLIER": "SUPPLIER"
-    }
-}

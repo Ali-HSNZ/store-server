@@ -22,6 +22,4 @@ const swaggerConfig = (app) => {
         )
     )
 }
-module.exports = {
-    swaggerConfig,
-}
+module.exports = { swaggerConfig }

@@ -68,12 +68,12 @@
  *  post:
  *      tags:
  *          -   Auth
- *      summary: send refresh token for get new access token and refresh token
+ *      summary: send refresh token for get new/valid access token and refresh token
  *      description: fresh token
  *      parameters:
  *      -   name: refreshToken
  *          in: formData
- *          example: <Your_Access_Token>
+ *          example: <Current_Refresh_Token>
  *          required: true
  *          type: string
  *      responses:

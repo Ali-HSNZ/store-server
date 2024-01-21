@@ -4,7 +4,7 @@ const path = require('path')
 const { AllRoutes } = require('./router/router')
 const morgan = require('morgan')
 const createError = require('http-errors')
-const { swaggerConfig } = require('./config/swagger.config')
+const { swaggerConfig } = require('./config/swagger/swagger.config')
 const cors = require('cors')
 class Application {
     #App = express()
@@ -30,9 +30,8 @@ class Application {
     }
     createServer() {
         this.#App.use(morgan('dev'))
-        const http = require('http')
-        http.createServer(this.#App).listen(this.#PORT, () => {
-            console.log(`Server Started on port: ${this.#PORT}`)
+        this.#App.listen(this.#PORT, () => {
+            console.log(`Server started on port: ${this.#PORT}`)
         })
     }
 
@@ -40,7 +39,7 @@ class Application {
         mongoose
             .connect(this.#DB_URI)
             .then(() => {
-                console.log('Connected to DB')
+                console.log('Connected to db')
             })
             .catch((err) => {
                 console.log(err?.message)

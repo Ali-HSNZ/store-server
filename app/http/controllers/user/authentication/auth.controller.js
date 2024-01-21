@@ -8,6 +8,7 @@ const moment = require('moment')
 const { signAccessToken } = require('../../../../utils/token/signAccessToken.utils')
 const { verifyAccessToken } = require('../../../../utils/token/verifyRefreshToken.utils')
 const { signRefreshToken } = require('../../../../utils/token/signRefreshToken.utils')
+const { CONSTANTS } = require('../../../../utils/constants')
 
 class UserAuthController extends Controller {
     async getOtp(req, res, next) {
@@ -93,7 +94,7 @@ class UserAuthController extends Controller {
         return await UserModel.create({
             mobile,
             otp,
-            roles: [process.env.USER_ROLE],
+            roles: [CONSTANTS.ROLES.USER],
         })
     }
 

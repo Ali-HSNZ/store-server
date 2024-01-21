@@ -1,7 +1,6 @@
 const createHttpError = require('http-errors')
 const { CategoryModel } = require('../../../models/categories.model')
 const Controller = require('../controller')
-const { result } = require('@hapi/joi/lib/base')
 const { addCategorySchema } = require('../../validators/admin/category.schema')
 
 class CategoryController extends Controller {
@@ -16,47 +15,118 @@ class CategoryController extends Controller {
             return res.status(201).json({
                 statusCode: 201,
                 message: 'با موفقیت ایجاد شد',
-                data: result,
             })
         } catch (error) {
             next(error)
         }
     }
-    remove(req, res, next) {
+    async remove(req, res, next) {
         try {
+            const { id } = req.params
+            const category = await this.checkExistCategory(id)
+            const deleteResult = await CategoryModel.deleteMany({
+                $or: [{ _id: category._id }, { parent: category._id }],
+            })
+            if (deleteResult.deletedCount === 0) {
+                throw createHttpError.InternalServerError('حذف دسته بندی انجام نشد')
+            }
+            return res.status(200).json({
+                statusCode: 200,
+                message: 'دسته بندی با موفقیت حذف شد',
+            })
         } catch (error) {
             next(error)
         }
     }
-    edit(req, res, next) {
+    async edit(req, res, next) {
         try {
+            const { id } = req.params
+            const { title } = req.body
+            await this.checkExistCategory(id)
+            const result = await CategoryModel.updateOne({ _id: id }, { $set: { title } })
+            if (result.modifiedCount === 0) {
+                throw createHttpError.InternalServerError('ویرایش دسته‌بندی انجام نشد')
+            }
+            return res.status(200).json({
+                statusCode: 200,
+                message: 'ویرایش دسته‌بندی با موفقیت انجام شد',
+            })
         } catch (error) {
             next(error)
         }
     }
-    getAll(req, res, next) {
+    async getAll(req, res, next) {
         try {
+            const allCategories = await CategoryModel.find({ parent: undefined }, { __v: 0 })
+
+            return res.status(200).json({
+                statusCode: 200,
+                data: allCategories,
+            })
         } catch (error) {
             next(error)
         }
     }
-    getById(req, res, next) {
+    async getById(req, res, next) {
         try {
+            const { id } = req.params
+            const category = await CategoryModel.find({ _id: id }, { __v: 0 })
+
+            return res.status(200).json({
+                statusCode: 200,
+                data: category,
+            })
         } catch (error) {
             next(error)
         }
     }
-    getAllParents(req, res, next) {
+    async getAllParents(req, res, next) {
         try {
+            const categoryHeads = await CategoryModel.find({ parent: null }, { __v: 0, parent: 0 })
+            return res.status(200).json({
+                statusCode: 200,
+                data: categoryHeads,
+            })
         } catch (error) {
             next(error)
         }
     }
-    getChildOfParents(req, res, next) {
+    async getChildOfParents(req, res, next) {
         try {
+            const { parentId } = req.params
+            const children = await CategoryModel.find({ parent: parentId }, { __v: 0, parent: 0 })
+            if (children.length) {
+                return res.status(200).json({
+                    statusCode: 200,
+                    data: children,
+                })
+            }
+            return res.status(203).json({
+                statusCode: 203,
+                data: children,
+            })
         } catch (error) {
             next(error)
         }
+    }
+    async getAllCategoryWithOutPopulate(req, res, next) {
+        try {
+            const categories = await CategoryModel.aggregate([
+                { $match: {} },
+                { $project: { __v: 0, parent: 0 } },
+            ])
+            return res.status(200).json({
+                statusCode: 200,
+                data: categories,
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async checkExistCategory(id) {
+        const category = await CategoryModel.findById(id)
+        if (!category) throw createHttpError.NotFound('دسته‌یافت نشد')
+        return category
     }
 }
 

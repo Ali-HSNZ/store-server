@@ -20,15 +20,22 @@
  *          required: true
  *          type: string
  *      responses:
+ *          200:
+ *              description:    Success
  *          201:
- *              description: Success
+ *              description:    Created
+ *          203:
+ *             description:     No Content(empty)
  *          400:
- *              description: Bad request
+ *              description:    Bad Request
  *          401:
- *              description: Unauthorized
+ *              description:    Unauthorized
+ *          403:
+ *              description:    Not Access(forbidden)
+ *          404:
+ *              description:    Not Found
  *          500:
- *              description: Internal server error
- *
+ *              description:    Internal Server Error
  */
 
 /**
@@ -51,15 +58,22 @@
  *          required: true
  *          type: string
  *      responses:
+ *          200:
+ *              description:    Success
  *          201:
- *              description: Success
+ *              description:    Created
+ *          203:
+ *             description:     No Content(empty)
  *          400:
- *              description: Bad request
+ *              description:    Bad Request
  *          401:
- *              description: Unauthorized
+ *              description:    Unauthorized
+ *          403:
+ *              description:    Not Access(forbidden)
+ *          404:
+ *              description:    Not Found
  *          500:
- *              description: Internal server error
- *
+ *              description:    Internal Server Error
  */
 
 /**
@@ -77,13 +91,20 @@
  *          required: true
  *          type: string
  *      responses:
+ *          200:
+ *              description:    Success
  *          201:
- *              description: Success
+ *              description:    Created
+ *          203:
+ *             description:     No Content(empty)
  *          400:
- *              description: Bad request
+ *              description:    Bad Request
  *          401:
- *              description: Unauthorized
+ *              description:    Unauthorized
+ *          403:
+ *              description:    Not Access(forbidden)
+ *          404:
+ *              description:    Not Found
  *          500:
- *              description: Internal server error
- *
+ *              description:    Internal Server Error
  */

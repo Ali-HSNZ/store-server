@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
+const { Schema, model } = require('mongoose')
 
-const Schema = new mongoose.Schema({})
+const PaymentSchema = new Schema({})
 
 module.exports = {
-    PaymentModel: mongoose.model('payment', Schema),
+    PaymentModel: model('payment', PaymentSchema),
 }

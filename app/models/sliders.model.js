@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
+const { Schema, model } = require('mongoose')
 
-const Schema = mongoose.Schema({
+const SliderSchema = new Schema({
     title: { type: String },
     text: { type: String },
     image: { type: String, required: true },
@@ -8,5 +8,5 @@ const Schema = mongoose.Schema({
 })
 
 module.exports = {
-    SliderModel: mongoose.model('slider', Schema),
+    SliderModel: model('slider', SliderSchema),
 }

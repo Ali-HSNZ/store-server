@@ -9,7 +9,7 @@ const CommentSchema = new Schema({
 
 const BlogSchema = new Schema(
     {
-        author: { type: Types.ObjectId,ref:'user', required: true },
+        author: { type: Types.ObjectId, ref: 'user', required: true },
         title: { type: String, required: true },
         text: { type: String, required: true },
         short_text: { type: String, required: true },

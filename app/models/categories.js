@@ -5,5 +5,5 @@ const Schema = new mongoose.Schema({
 })
 
 module.exports = {
-    BlogModel: mongoose.model('category', Schema),
+    CategoryModel: mongoose.model('category', Schema),
 }

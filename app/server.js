@@ -2,6 +2,7 @@ const { AllRoutes } = require('./router/router')
 
 const express = require('express')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const path = require('path')
 
 module.exports = class Application {
@@ -23,6 +24,7 @@ module.exports = class Application {
         this.#APP.use(express.json())
         this.#APP.use(express.urlencoded())
         this.#APP.use(express.static(path.join(__dirname, '..', 'public')))
+        this.#APP.use(morgan('dev'))
     }
     createServer() {
         const http = require('http')
@@ -31,14 +33,20 @@ module.exports = class Application {
         })
     }
     connectToDB() {
-        mongoose
-            .connect(this.#DB_URI)
-            .then(() => {
-                console.log('Connected to db')
-            })
-            .catch((err) => {
-                console.log(err?.message)
-            })
+        mongoose.connect(this.#DB_URI).catch((err) => {
+            console.log(err?.message)
+        })
+        mongoose.connection.on('connected', () => {
+            console.log('DB connected')
+        })
+        mongoose.connection.on('disconnected', () => {
+            console.log('DB disconnected')
+        })
+        process.on('SIGINT', async () => {
+            console.log('Received SIGINT. Closing DB connection...')
+            await mongoose.connection.close()
+            process.exit(0)
+        })
     }
     createRoutes() {
         this.#APP.use(AllRoutes)
@@ -47,7 +55,7 @@ module.exports = class Application {
         this.#APP.use((req, res, next) => {
             return res.json({
                 statusCode: 404,
-                message: 'آدرس مورد نظر یافت نشد!',
+                message: 'آدرس مورد نظر یافت نشد',
             })
         })
         this.#APP.use((err, req, res, next) => {

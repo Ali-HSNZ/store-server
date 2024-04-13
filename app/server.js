@@ -1,3 +1,4 @@
+const createError = require('http-errors')
 const { AllRoutes } = require('./router/router')
 
 const express = require('express')
@@ -53,16 +54,13 @@ module.exports = class Application {
     }
     errorHandling() {
         this.#APP.use((req, res, next) => {
-            return res.json({
-                statusCode: 404,
-                message: 'آدرس مورد نظر یافت نشد',
-            })
+            next(createError.NotFound('آدرس موردنظر یافت نشد'))
         })
         this.#APP.use((err, req, res, next) => {
-            const statusCode = err?.status || 500
-            const message = err.message || 'Internal Server Error'
-
-            return res.static(statusCode).json({
+            const serverError = createError.InternalServerError()
+            const statusCode = err?.status || serverError.status
+            const message = err.message || serverError.message
+            return res.status(statusCode).json({
                 statusCode,
                 message,
             })

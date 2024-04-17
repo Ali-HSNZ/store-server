@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const path = require('path')
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerJSDoc = require('swagger-jsdoc')
+
 module.exports = class Application {
     #APP = express()
     #DB_URI
@@ -26,6 +29,16 @@ module.exports = class Application {
         this.#APP.use(express.urlencoded())
         this.#APP.use(express.static(path.join(__dirname, '..', 'public')))
         this.#APP.use(morgan('dev'))
+        this.#APP.use(
+            '/api-doc',
+            swaggerUi.serve,
+            swaggerUi.setup(
+                swaggerJSDoc({
+                    definition: { info: { title: 'Document', version: '0.0.1' } },
+                    apis: ['./router/**/*'],
+                })
+            )
+        )
     }
     createServer() {
         const http = require('http')

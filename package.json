@@ -83,6 +83,8 @@
         "setprototypeof": "^1.2.0",
         "side-channel": "^1.0.6",
         "statuses": "^2.0.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.0",
         "toidentifier": "^1.0.1",
         "type-is": "^1.6.18",
         "undici-types": "^5.26.5",

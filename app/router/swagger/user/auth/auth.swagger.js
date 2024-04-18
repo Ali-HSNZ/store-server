@@ -1,15 +1,19 @@
 /**
  * @swagger
- * tags:
- *      name: Home
- * /:
- *     get:
- *      tags: [Home]
- *      summary: home page
- *      description: get base api
- *      responses:
- *          200:
- *              description: success
- *          400:
- *              description: not found
+ * /auth/login:
+ *      post:
+ *          tags: [Auth]
+ *          summary: get OTP code with phone number
+ *          parameters:
+ *              -   name: mobile
+ *                  in: formData
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              201:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              500:
+ *                  description: Internal Server Error
  */

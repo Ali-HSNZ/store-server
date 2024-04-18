@@ -34,8 +34,8 @@ module.exports = class Application {
             swaggerUi.serve,
             swaggerUi.setup(
                 swaggerJSDoc({
-                    definition: { info: { title: 'Document', version: '0.0.1' } },
-                    apis: ['./router/**/*'],
+                    definition: { info: { title: 'API Document', version: '0.0.1' } },
+                    apis: ['./app/router/**/*.js'],
                 })
             )
         )

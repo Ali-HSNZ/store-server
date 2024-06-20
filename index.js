@@ -1,3 +1,13 @@
 const Application = require('./app/server')
+const dotenv = require('dotenv')
 
-new Application(5000, 'mongodb://localhost:27017/storeDB')
+// config dotEnv
+dotenv.config()
+
+const {
+    MONGO_CONNECTION_URL: mongoUrl,
+    MONGO_DB_NAME: dbName,
+    APPLICATION_PORT: port,
+} = process.env
+
+new Application(port, `${mongoUrl}/${dbName}`)

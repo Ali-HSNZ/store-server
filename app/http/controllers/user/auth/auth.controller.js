@@ -8,15 +8,23 @@ const Controller = require('../../controller')
 class AuthController extends Controller {
     async login(req, res, next) {
         try {
+            // validate req body
             await authSchema.validateAsync(req.body)
+
             const { mobile } = req.body
+
+            // generate random number
             const code = otpGenerator()
+
+            // if exist user, create user otherwise update user otp
             const result = await this.saveUser(mobile, code)
 
+            // if problem from process throw error
             if (!result) {
-                throw createHttpError.Unauthorized('ورود شما با خطا مواجه شد!')
+                throw createHttpError.Unauthorized('ورود شما با خطا مواجه شد')
             }
 
+            // finally response code and user mobile
             return res.status(201).json({
                 data: {
                     statusCode: 201,
@@ -30,14 +38,21 @@ class AuthController extends Controller {
         }
     }
     async saveUser(mobile, code) {
+        // check exist user from DB
         const isAvailableUser = await this.checkExistUser(mobile)
+
+        // otp template
         const otp = {
             code,
-            expiresIn: new Date().getTime() + 120000,
+            expiresIn: new Date().getTime() + 120000, // 2 minutes,
         }
+
+        // if user exist from DB, find user with mobile, and update user otp code
         if (isAvailableUser) {
             return await this.updateUser(mobile, { otp })
         }
+
+        // if is not exist, create user with mobile
         const createUser = await UserModel.create({
             mobile,
             otp,
@@ -45,18 +60,16 @@ class AuthController extends Controller {
         })
         return !!createUser
     }
+
+    // check exist user from DB
     async checkExistUser(mobile) {
         const user = await UserModel.findOne({ mobile })
         return !!user
     }
-    async updateUser(mobile, objectData) {
-        const badData = ['', ' ', 0, null, undefined, '0', NaN]
-        Object.keys(objectData).forEach((key) => {
-            if (badData.includes(objectData[key])) {
-                delete objectData[key]
-            }
-        })
-        const updateResult = await UserModel.updateOne({ mobile }, { $set: objectData })
+
+    // update user otp with mobile
+    async updateUser(mobile, newOtp) {
+        const updateResult = await UserModel.updateOne({ mobile }, { $set: newOtp })
         return !!updateResult.modifiedCount
     }
 }

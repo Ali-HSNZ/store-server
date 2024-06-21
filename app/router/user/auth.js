@@ -2,7 +2,8 @@ const { AuthController } = require('../../http/controllers/user/auth/auth.contro
 
 const router = require('express').Router()
 
-router.post('/login', AuthController.login)
+router.post('/get-otp', AuthController.getOTP)
+router.post('/check-otp', AuthController.checkOTP)
 
 module.exports = {
     AuthRoutes: router,

@@ -1,15 +1,41 @@
 const createHttpError = require('http-errors')
-const { authSchema } = require('../../../validators/user/user.vaidation')
+const { checkOtpSchema, getOtpSchema } = require('../../../validators/user/user.validation')
 const { UserModel } = require('../../../../models/users')
 const { USER_ROLE } = require('../../../../utils/constants')
-const { otpGenerator } = require('../../../../utils/functions')
+const { otpGenerator, signAccessToken } = require('../../../../utils/functions')
 const Controller = require('../../controller')
 
 class AuthController extends Controller {
-    async login(req, res, next) {
+    async checkOTP(req, res, next) {
+        try {
+            await checkOtpSchema.validateAsync(req.body)
+            const { mobile, code } = req.body
+
+            const user = await UserModel.findOne({ mobile })
+
+            if (!user) throw createHttpError.NotFound('کاربر یافت نشد')
+
+            if (user.otp.code != code)
+                throw createHttpError.Unauthorized('کد ارسال شده صحیح نمی باشد')
+
+            if (+user.otp.expiresIn < Date.now())
+                throw createHttpError.Unauthorized('کد شما منقضی شده است')
+
+            const accessToken = await signAccessToken(user.mobile)
+            return res.status(200).json({
+                data: {
+                    accessToken,
+                },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getOTP(req, res, next) {
         try {
             // validate req body
-            await authSchema.validateAsync(req.body)
+            await getOtpSchema.validateAsync(req.body)
 
             const { mobile } = req.body
 
@@ -19,7 +45,7 @@ class AuthController extends Controller {
             // if exist user, create user otherwise update user otp
             const result = await this.saveUser(mobile, code)
 
-            // if problem from process throw error
+            // if problem from process, throw error
             if (!result) {
                 throw createHttpError.Unauthorized('ورود شما با خطا مواجه شد')
             }
@@ -37,6 +63,7 @@ class AuthController extends Controller {
             next(createHttpError.BadRequest(error.message))
         }
     }
+
     async saveUser(mobile, code) {
         // check exist user from DB
         const isAvailableUser = await this.checkExistUser(mobile)

@@ -1,6 +1,8 @@
 const createError = require('http-errors')
 const { AllRoutes } = require('./router/router')
 
+const cors = require('cors')
+
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
@@ -25,6 +27,7 @@ module.exports = class Application {
     }
 
     configApplication() {
+        this.#APP.use(cors())
         this.#APP.use(express.json())
         this.#APP.use(express.urlencoded({ extended: true }))
         this.#APP.use(express.static(path.join(__dirname, '..', 'public')))

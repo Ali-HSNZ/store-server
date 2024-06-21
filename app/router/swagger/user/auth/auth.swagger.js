@@ -41,3 +41,23 @@
  *              500:
  *                  description: Internal Server Error
  */
+
+/**
+ * @swagger
+ * /auth/refresh-token:
+ *      post:
+ *          tags: [Auth]
+ *          summary:  update access-token with refresh token
+ *          parameters:
+ *              -   name: refreshToken
+ *                  in: formData
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad Request
+ *              500:
+ *                  description: Internal Server Error
+ */

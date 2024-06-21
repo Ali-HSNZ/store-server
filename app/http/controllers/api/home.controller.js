@@ -1,4 +1,3 @@
-const { authSchema } = require('../../validators/user/user.vaidation')
 const Controller = require('../controller')
 
 module.exports = new (class HomeController extends Controller {

@@ -20,7 +20,8 @@ module.exports = class Application {
         this.#DB_URI = DB_URI
 
         this.configApplication()
-        this.connectToDB()
+        this.connectToRedisDB()
+        this.connectToMongoDB()
         this.createServer()
         this.createRoutes()
         this.errorHandling()
@@ -46,27 +47,30 @@ module.exports = class Application {
     createServer() {
         const http = require('http')
         http.createServer(this.#APP).listen(this.#PORT, () => {
-            console.log('run > http://localhost:' + this.#PORT)
+            console.log('- http://localhost:' + this.#PORT)
         })
     }
-    connectToDB() {
+    connectToMongoDB() {
         mongoose.connect(this.#DB_URI).catch((err) => {
             console.log(err?.message)
         })
         mongoose.connection.on('connected', () => {
-            console.log('DB connected')
+            console.log('- mongo DB connected')
         })
         mongoose.connection.on('disconnected', () => {
-            console.log('DB disconnected')
+            console.log('- DB disconnected')
         })
         process.on('SIGINT', async () => {
-            console.log('Received SIGINT. Closing DB connection...')
+            console.log('- Received SIGINT. Closing DB connection...')
             await mongoose.connection.close()
             process.exit(0)
         })
     }
     createRoutes() {
         this.#APP.use(AllRoutes)
+    }
+    connectToRedisDB() {
+        require('./utils/init-redis')
     }
     errorHandling() {
         this.#APP.use((req, res, next) => {

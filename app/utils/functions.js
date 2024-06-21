@@ -1,6 +1,7 @@
 const createHttpError = require('http-errors')
 const jwt = require('jsonwebtoken')
 const { UserModel } = require('../models/users')
+const redisClient = require('./init-redis')
 
 const otpGenerator = () => {
     return Math.floor(Math.random() * 90000 + 10000)
@@ -24,8 +25,10 @@ const signRefreshToken = (userMobile) => {
         const secretKey = process.env.REFRESH_TOKEN_SECRET_KEY
         const options = { expiresIn: '1y' }
 
-        jwt.sign(payload, secretKey, options, (error, token) => {
+        jwt.sign(payload, secretKey, options, async (error, token) => {
             if (error) reject(createHttpError.InternalServerError('خطای سمت سرور'))
+            // expires in 1 Year
+            await redisClient.SETEX(userMobile, 365 * 24 * 60 * 60, token)
             resolve(token)
         })
     })
@@ -47,7 +50,9 @@ const verifyRefreshToken = (token) => {
             if (!!!user)
                 return reject(createHttpError.Unauthorized('مجددا وارد حساب کاربری خود شوید'))
 
-            resolve(user.mobile)
+            const refreshToken = await redisClient.get(user.mobile)
+            if (token === refreshToken) return resolve(user.mobile)
+            reject(createHttpError.Unauthorized('ورود مجدد به حساب کاربری انجام نشد'))
         })
     })
 }

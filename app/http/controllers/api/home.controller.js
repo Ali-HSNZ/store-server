@@ -1,4 +1,4 @@
-const Controller = require('../controller')
+const { Controller } = require('../controller')
 
 module.exports = new (class HomeController extends Controller {
     async indexPage(req, res, next) {

@@ -1,6 +1,6 @@
 const createHttpError = require('http-errors')
 const { CategoryModel } = require('../../../models/categories')
-const Controller = require('../controller')
+const { Controller } = require('../controller')
 const { addCategorySchema } = require('../../validators/admin/category.validation')
 
 class CategoryController extends Controller {

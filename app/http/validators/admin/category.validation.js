@@ -1,5 +1,5 @@
 const joi = require('@hapi/joi')
-const { MongoIdPattern } = require('../../../utils/constants')
+const { MongoIdPattern } = require('../../../constants')
 
 const addCategorySchema = joi.object({
     title: joi

@@ -1,15 +1,14 @@
 const createHttpError = require('http-errors')
 const { checkOtpSchema, getOtpSchema } = require('../../../validators/user/user.validation')
 const { UserModel } = require('../../../../models/users')
-const { USER_ROLE } = require('../../../../utils/constants')
+const { Controller } = require('../../controller')
 const {
     otpGenerator,
+    signRefreshToken,
     signAccessToken,
     verifyRefreshToken,
-    signRefreshToken,
-} = require('../../../../utils/functions')
-const Controller = require('../../controller')
-
+} = require('../../../../utils')
+const { USER_ROLE } = require('../../../../constants')
 class AuthController extends Controller {
     async checkOTP(req, res, next) {
         try {

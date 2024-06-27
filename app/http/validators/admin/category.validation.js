@@ -14,4 +14,12 @@ const addCategorySchema = joi.object({
         .error(new Error('شناسه وارد شده صحیح نمی باشد')),
 })
 
-module.exports = { addCategorySchema }
+const editCategorySchema = joi.object({
+    title: joi
+        .string()
+        .min(3)
+        .max(30)
+        .error(new Error('عنوان دسته بندی باید حداقل 3 تا 30 کاراکتر باشد')),
+})
+
+module.exports = { addCategorySchema, editCategorySchema }

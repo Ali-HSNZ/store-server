@@ -1,5 +1,5 @@
 const createError = require('http-errors')
-const { AllRoutes } = require('./router/router')
+const { AllRoutes } = require('./router/routes/router')
 
 const cors = require('cors')
 

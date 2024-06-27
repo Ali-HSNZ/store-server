@@ -1,6 +1,6 @@
-const { CategoryRoutes } = require('./admin/category')
-const { HomeRoutes } = require('./api')
-const { AuthRoutes } = require('./user/auth')
+const { CategoryRoutes } = require('./admin/category.routes')
+const { HomeRoutes } = require('./api/home.routes')
+const { AuthRoutes } = require('./user/auth.routes')
 
 const router = require('express').Router()
 

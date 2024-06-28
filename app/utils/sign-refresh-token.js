@@ -5,13 +5,17 @@ const jwt = require('jsonwebtoken')
 const signRefreshToken = (userMobile) => {
     return new Promise(async (resolve, reject) => {
         const payload = { mobile: userMobile }
-        const secretKey = process.env.REFRESH_TOKEN_SECRET_KEY
-        const options = { expiresIn: '1y' }
 
-        jwt.sign(payload, secretKey, options, async (error, token) => {
+        const [secretKey, jwtExpiresIn, redisExpiresIn] = [
+            process.env.REFRESH_TOKEN_SECRET_KEY,
+            process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+            process.env.REDIS_REFRESH_TOKEN_EXPIRES_IN,
+        ]
+
+        jwt.sign(payload, secretKey, { expiresIn: jwtExpiresIn }, async (error, token) => {
             if (error) reject(createHttpError.InternalServerError('خطای سمت سرور'))
             // expires in 1 Year
-            await redisClient.SETEX(userMobile, 365 * 24 * 60 * 60, token)
+            await redisClient.SETEX(userMobile, redisExpiresIn, token)
             resolve(token)
         })
     })

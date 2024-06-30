@@ -4,10 +4,16 @@
  *      get:
  *          tags: [Category (Admin-Panel)]
  *          summary: get All parents of category or category heads
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *          responses:
  *              200:
  *                  description: success
- *
  */
 
 /**
@@ -16,6 +22,13 @@
  *      get:
  *          tags: [Category (Admin-Panel)]
  *          summary: get All categories
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *          responses:
  *              200:
  *                  description: success
@@ -29,6 +42,12 @@
  *          tags: [Category (Admin-Panel)]
  *          summary: get All children of category parent
  *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *              -   in: path
  *                  name: parent
  *                  type: string
@@ -46,6 +65,12 @@
  *          tags: [Category (Admin-Panel)]
  *          summary: find category by id
  *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -62,6 +87,13 @@
  *      get:
  *          tags: [Category (Admin-Panel)]
  *          summary: get all categories without nested
+ *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *          responses:
  *              200:
  *                  description: success
@@ -75,14 +107,21 @@
  *          tags: [Category (Admin-Panel)]
  *          summary: add category
  *          parameters:
- *              -   name: title
- *                  in: formData
+ *              -   in: header
+ *                  name: access-token
  *                  type: string
  *                  required: true
- *              -   name: parent
- *                  in: formData
- *                  type: string
- *                  required: false
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddCategory'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddCategory'
  *          responses:
  *              201:
  *                  description: Success
@@ -99,14 +138,26 @@
  *          tags: [Category (Admin-Panel)]
  *          summary: add category
  *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *              -   in: path
  *                  name: id
  *                  type: string
  *                  required: true
- *              -   name: title
- *                  in: formData
- *                  type: string
- *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditCategory'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditCategory'
+ *
  *          responses:
  *              201:
  *                  description: Success
@@ -123,6 +174,12 @@
  *          tags: [Category (Admin-Panel)]
  *          summary: remove category by id
  *          parameters:
+ *              -   in: header
+ *                  name: access-token
+ *                  type: string
+ *                  required: true
+ *                  value: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMjUyMDUwOCIsImlhdCI6MTcxOTU3NDUxMywiZXhwIjoxNzE5NTc4MTEzfQ.eGWrKQ4nX6qOCzfZgIzPT1IFU8OnfKiMa0bw16aCjyQ
+ *                  example: bearer <YOUR-TOKEN>
  *              -   in: path
  *                  name: id
  *                  type: string

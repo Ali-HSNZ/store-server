@@ -2,13 +2,17 @@
  * @swagger
  * /auth/get-otp:
  *      post:
- *          tags: [Auth]
+ *          tags: [User-Authentication]
  *          summary: get OTP code with phone number
- *          parameters:
- *              -   name: mobile
- *                  in: formData
- *                  type: string
- *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOTP'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/GetOTP'
  *          responses:
  *              201:
  *                  description: Success
@@ -22,17 +26,17 @@
  * @swagger
  * /auth/check-otp:
  *      post:
- *          tags: [Auth]
+ *          tags: [User-Authentication]
  *          summary: check OTP code
- *          parameters:
- *              -   name: mobile
- *                  in: formData
- *                  type: string
- *                  required: true
- *              -   name: code
- *                  in: formData
- *                  type: string
- *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOTP'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/CheckOTP'
  *          responses:
  *              200:
  *                  description: Success
@@ -46,13 +50,14 @@
  * @swagger
  * /auth/refresh-token:
  *      post:
- *          tags: [Auth]
+ *          tags: [User-Authentication]
  *          summary:  update access-token with refresh token
- *          parameters:
- *              -   name: refreshToken
- *                  in: formData
- *                  type: string
- *                  required: true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/RefreshToken'
  *          responses:
  *              200:
  *                  description: Success

@@ -1,7 +1,7 @@
 /**
  * @swagger
  *  tags:
- *      -   name: Auth
+ *      -   name: User-Authentication
  *          description: User authentication
  *      -   name: Category (Admin-Panel)
  *          description: All method about categories

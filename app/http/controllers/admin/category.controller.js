@@ -43,7 +43,7 @@ class CategoryController extends Controller {
                 throw createHttpError.InternalServerError('حذف دسته بندی انجام نشد')
 
             res.status(200).json({
-                message: 'حذف دسته بندی با موفقیت حذف شد',
+                message: 'حذف دسته بندی با موفقیت انجام شد',
                 statusCode: 200,
             })
         } catch (error) {

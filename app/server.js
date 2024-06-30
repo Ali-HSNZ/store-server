@@ -10,6 +10,7 @@ const path = require('path')
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerJSDoc = require('swagger-jsdoc')
+const { redisClient } = require('./utils')
 
 module.exports = class Application {
     #APP = express()
@@ -74,8 +75,12 @@ module.exports = class Application {
             console.log('- DB disconnected')
         })
         process.on('SIGINT', async () => {
-            console.log('- Received SIGINT. Closing DB connection...')
+            console.log('- closing mongo & redis connection...')
+            // disconnect mongoDB
             await mongoose.connection.close()
+            // disconnect redisDB
+            redisClient.disconnect()
+
             process.exit(0)
         })
     }

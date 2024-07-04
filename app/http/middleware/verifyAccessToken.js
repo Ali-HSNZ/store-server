@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 // get token from request header
 const getToken = (headers) => {
-    const [bearer, token] = headers?.['access-token']?.split(' ') || []
+    const [bearer, token] = headers?.authorization?.split(' ') || []
 
     if (token && bearer.toLowerCase() === 'bearer') return token
     throw createHttpError.Unauthorized('حساب کاربری شناسایی نشد. وارد حساب کاربری خود شوید')

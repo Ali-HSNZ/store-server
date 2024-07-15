@@ -3,6 +3,8 @@
  *  tags:
  *      -   name: User-Authentication
  *          description: User authentication
+ *      -   name: Product (Admin-Panel)
+ *          description: products management
  *      -   name: Category (Admin-Panel)
  *          description: All method about categories
  *      -   name: Blog (Admin-Panel)

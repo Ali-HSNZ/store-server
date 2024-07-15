@@ -38,8 +38,11 @@
  *                  count:
  *                      type: number
  *                      description: count of product
- *                  image:
- *                      type: file
+ *                  images:
+ *                      type: array
+ *                      items:
+ *                          type: string
+ *                          format: binary
  *                      description: picture of product
  *                  height:
  *                      type: number
@@ -53,4 +56,15 @@
  *                  length:
  *                      type: number
  *                      description: length of product packet
+ *                  madeIn:
+ *                      type: string
+ *                      description: made product in ? country
+ *                      example: Iran
+ *                  color:
+ *                      type: string
+ *                      description: product color
+ *                  model:
+ *                      type: array
+ *                      description: product models
+ *
  */

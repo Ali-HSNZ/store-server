@@ -28,7 +28,7 @@ const Schema = new mongoose.Schema({
             weight: '',
             color: [],
             model: [],
-            madeIn,
+            madeIn: '',
         },
     },
 })

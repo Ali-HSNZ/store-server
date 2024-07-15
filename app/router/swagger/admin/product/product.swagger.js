@@ -1,5 +1,16 @@
 /**
  * @swagger
+ *  /admin/products/get-all:
+ *      get:
+ *          tags: [Product (Admin-Panel)]
+ *          summary: get all products list
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+
+/**
+ * @swagger
  *  /admin/products/add:
  *      post:
  *          tags: [Product (Admin-Panel)]

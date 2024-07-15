@@ -4,7 +4,14 @@ const { stringToArray } = require('../../../http/middleware/string-to-array.midd
 const { uploadFile } = require('../../../utils')
 
 // POST
-router.post('/add', uploadFile.single('image'), stringToArray('tags'), ProductController.add)
+router.post(
+    '/add',
+    uploadFile.array('images', 10),
+    stringToArray('tags'),
+    stringToArray('model'),
+    ProductController.add
+)
+router.get('/get-all', ProductController.getAll)
 
 module.exports = {
     ProductRoutes: router,

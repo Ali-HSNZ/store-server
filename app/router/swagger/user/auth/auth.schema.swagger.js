@@ -8,7 +8,7 @@
  *                  -   mobile
  *              properties:
  *                  mobile:
- *                      type: string
+ *                      type: number
  *                      description: user mobile for signUp/signIn
  *          CheckOTP:
  *              type: object
@@ -17,7 +17,7 @@
  *                  -   code
  *              properties:
  *                  mobile:
- *                      type: string
+ *                      type: number
  *                      description: user mobile
  *                  code:
  *                      type: number

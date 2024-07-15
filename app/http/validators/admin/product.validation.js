@@ -12,6 +12,7 @@ const addProductSchema = joi.object({
     short_text: joi.string().error(createHttpError.BadRequest('متن وارد شده صحیح نمی باشد')),
     tags: joi
         .array()
+        .empty()
         .min(0)
         .max(20)
         .error(createHttpError.BadRequest('برچسب ها نمی تواند بیشتر از 20 آیتم باشد')),
@@ -34,6 +35,24 @@ const addProductSchema = joi.object({
         .string()
         .pattern(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
         .error(createHttpError.BadRequest('تصویر ارسال شده صحیح نمی باشد')),
+    color: joi
+        .string()
+        .optional()
+        .error(createHttpError.BadRequest('رنگ Hex وارد شده صحیح نمی‌باشد')),
+    madeIn: joi
+        .string()
+        .optional()
+        .error(createHttpError.BadRequest('کشور سازنده محصول معتبر نمی‌باشد')),
+    model: joi
+        .array()
+        .empty()
+        .min(0)
+        .max(20)
+        .error(
+            createHttpError.BadRequest(
+                'مدل وارد شده برای محصول صحیح نمی‌باشد | حداکثر 20 مدل معتبر است'
+            )
+        ),
 })
 
 module.exports = { addProductSchema }

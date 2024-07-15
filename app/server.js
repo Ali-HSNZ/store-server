@@ -47,7 +47,7 @@ module.exports = class Application {
                         },
                         servers: [
                             {
-                                url: 'http://localhost:5000',
+                                url: `http://localhost:${this.#PORT}`,
                                 description: 'Development server',
                             },
                         ],

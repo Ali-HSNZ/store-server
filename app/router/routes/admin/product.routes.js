@@ -3,6 +3,10 @@ const { ProductController } = require('../../../http/controllers/admin/product.c
 const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')
 const { uploadFile } = require('../../../utils')
 
+// Get
+router.get('/get-all', ProductController.getAll)
+router.get('/get-by-id/:id', ProductController.getOne)
+
 // POST
 router.post(
     '/add',
@@ -11,7 +15,9 @@ router.post(
     stringToArray('model'),
     ProductController.add
 )
-router.get('/get-all', ProductController.getAll)
+
+//DELETE
+router.delete('/delete-by-id/:id', ProductController.remove)
 
 module.exports = {
     ProductRoutes: router,

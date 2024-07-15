@@ -2,8 +2,8 @@ const { deleteFileInPublic, listOfImagesFromRequest } = require('../../../utils'
 const { addProductSchema } = require('../../validators/admin/product.validation')
 const { Controller } = require('../controller')
 const { ProductModel } = require('../../../models/products')
-const path = require('path')
-
+const { objectIdValidator } = require('../../validators/public.validator')
+const createHttpError = require('http-errors')
 class ProductController extends Controller {
     async add(req, res, next) {
         try {
@@ -87,6 +87,17 @@ class ProductController extends Controller {
     }
     async remove(req, res, next) {
         try {
+            const { id } = req.params
+            await this.findProductById(id)
+            const deleteProductResult = await ProductModel.deleteOne({ _id: id })
+
+            if (deleteProductResult.deletedCount === 0)
+                throw createHttpError.InternalServerError('خطای سرور')
+
+            return res.status(200).json({
+                statusCode: 200,
+                message: 'حذف محصول با موفقیت انجام شد',
+            })
         } catch (error) {
             next(error)
         }
@@ -105,9 +116,21 @@ class ProductController extends Controller {
     }
     async getOne(req, res, next) {
         try {
+            const { id } = req.params
+            const product = await this.findProductById(id)
+            return res.status(200).json({
+                statusCode: 200,
+                data: product,
+            })
         } catch (error) {
             next(error)
         }
+    }
+    async findProductById(productId) {
+        const { id } = await objectIdValidator.validateAsync({ id: productId })
+        const product = await ProductModel.findById(id)
+        if (!id) throw createHttpError.NotFound('محصول یافت نشد')
+        return product
     }
 }
 

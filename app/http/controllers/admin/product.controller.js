@@ -4,6 +4,7 @@ const { Controller } = require('../controller')
 const { ProductModel } = require('../../../models/products')
 const { objectIdValidator } = require('../../validators/public.validator')
 const createHttpError = require('http-errors')
+const { StatusCodes } = require('http-status-codes')
 class ProductController extends Controller {
     async add(req, res, next) {
         try {
@@ -68,9 +69,9 @@ class ProductController extends Controller {
                 type,
             })
 
-            res.status(201).json({
+            res.status(StatusCodes.CREATED).json({
                 body: {
-                    statusCode: 201,
+                    statusCode: StatusCodes.CREATED,
                     message: 'محصول با موفقیت ایجاد شد',
                 },
             })
@@ -94,8 +95,8 @@ class ProductController extends Controller {
             if (deleteProductResult.deletedCount === 0)
                 throw createHttpError.InternalServerError('خطای سرور')
 
-            return res.status(200).json({
-                statusCode: 200,
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 message: 'حذف محصول با موفقیت انجام شد',
             })
         } catch (error) {
@@ -105,9 +106,9 @@ class ProductController extends Controller {
     async getAll(req, res, next) {
         try {
             const products = await ProductModel.find({})
-            res.status(200).json({
+            res.status(StatusCodes.OK).json({
                 data: products,
-                statusCode: 200,
+                statusCode: StatusCodes.OK,
                 message: 'لیست همه محصولات',
             })
         } catch (error) {

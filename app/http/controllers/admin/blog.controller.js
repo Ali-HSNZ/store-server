@@ -5,6 +5,7 @@ const { BlogModel } = require('../../../models/blogs')
 const { deleteFileInPublic } = require('../../../utils')
 const { default: mongoose } = require('mongoose')
 const createHttpError = require('http-errors')
+const { StatusCodes } = require('http-status-codes')
 
 class BlogController extends Controller {
     async create(req, res, next) {
@@ -29,9 +30,9 @@ class BlogController extends Controller {
                 author,
             })
 
-            res.status(201).json({
+            res.status(StatusCodes.CREATED).json({
                 data: {
-                    statusCode: 201,
+                    statusCode: StatusCodes.CREATED,
                     message: 'مقاله با موفقیت ایجاد شد',
                 },
             })
@@ -49,11 +50,11 @@ class BlogController extends Controller {
 
             const blog = await this.findBlog({ _id: id })
 
-            res.status(200).json({
+            res.status(StatusCodes.OK).json({
                 data: {
                     blog,
                 },
-                statusCode: 200,
+                statusCode: StatusCodes.OK,
             })
         } catch (error) {
             next(error)
@@ -108,8 +109,8 @@ class BlogController extends Controller {
                     },
                 },
             ])
-            res.status(200).json({
-                data: { blogs, statusCode: 200 },
+            res.status(StatusCodes.OK).json({
+                data: { blogs, statusCode: StatusCodes.OK },
             })
         } catch (error) {
             next(error)
@@ -184,8 +185,8 @@ class BlogController extends Controller {
             if (result.deletedCount === 0)
                 throw createHttpError.InternalServerError('حذف مقاله انجام نشد')
 
-            res.status(200).json({
-                statusCode: 200,
+            res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 message: 'مقاله با موفقیت حذف شد',
             })
         } catch (error) {

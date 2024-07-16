@@ -1,4 +1,4 @@
-const { BlogController } = require('../../../http/controllers/admin/blog.controller')
+const { BlogController } = require('../../../http/controllers/admin/blog/blog.controller')
 const { uploadFile } = require('../../../utils')
 const router = require('express').Router()
 const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')

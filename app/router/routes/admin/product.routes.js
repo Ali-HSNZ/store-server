@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { ProductController } = require('../../../http/controllers/admin/product.controller')
+const { ProductController } = require('../../../http/controllers/admin/product/product.controller')
 const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')
 const { uploadFile } = require('../../../utils')
 

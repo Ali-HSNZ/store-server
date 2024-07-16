@@ -1,11 +1,11 @@
 const { StatusCodes } = require('http-status-codes')
-const { CourseModel } = require('../../../models/course')
-const { Controller } = require('../controller')
+const { CourseModel } = require('../../../../models/course')
+const { Controller } = require('../../controller')
 const path = require('path')
-const { deleteFileFromPublic } = require('../../../utils')
-const { addCourseSchema } = require('../../validators/admin/course.validation')
+const { deleteFileFromPublic } = require('../../../../utils')
+const { addCourseSchema } = require('../../../validators/admin/course.validation')
 const createHttpError = require('http-errors')
-const { objectIdValidator } = require('../../validators/public.validator')
+const { objectIdValidator } = require('../../../validators/public.validator')
 
 class CourseController extends Controller {
     async getAll(req, res, next) {
@@ -29,8 +29,8 @@ class CourseController extends Controller {
 
     async getById(req, res, next) {
         try {
-            const productId = req.params.id
-            const { id } = await objectIdValidator.validateAsync({ id: productId })
+            const courseId = req.params.id
+            const { id } = await objectIdValidator.validateAsync({ id: courseId })
             const course = await CourseModel.findById(id)
 
             if (!course) throw createHttpError.NotFound('دوره یافت نشد')
@@ -85,6 +85,42 @@ class CourseController extends Controller {
 
             next(error)
         }
+    }
+
+    async addChapter(req, res, next) {
+        try {
+            const { id } = req.params
+            const { title, text } = req.body
+            await this.checkCourseExist(id)
+            const chapterResult = await CourseModel.updateOne(
+                { _id: id },
+                {
+                    $push: {
+                        chapters: {
+                            title,
+                            text,
+                            episode: [],
+                        },
+                    },
+                }
+            )
+            if (chapterResult.modifiedCount === 0)
+                throw createHttpError.InternalServerError('فصل ایجاد نشد')
+
+            return res.status(StatusCodes.CREATED).json({
+                statusCode: StatusCodes.CREATED,
+                data: {
+                    message: 'فصل با موفقیت ایجاد شد',
+                },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async checkCourseExist(courseId) {
+        const { id } = await objectIdValidator.validateAsync({ id: courseId })
+        const course = await CourseModel.findById(id)
+        if (!course) throw createHttpError.NotFound('دوره یافت نشد')
     }
 }
 

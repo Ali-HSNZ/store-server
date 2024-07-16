@@ -157,7 +157,7 @@ class BlogController extends Controller {
                 },
             })
         } catch (error) {
-            if (req?.body?.image) deleteFileInPublic(req.body.image)
+            deleteFileFromPublic(req.body.fileUploadPath, req.body.filename)
             next(error)
         }
     }

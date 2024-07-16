@@ -15,7 +15,7 @@ const ProductSchema = new mongoose.Schema({
     price: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
     count: { type: Number },
-    type: { type: String, required: true }, // virtual - physic
+    type: { type: String, required: true }, // virtual - physical
     format: { type: String },
     supplier: { type: mongoose.Types.ObjectId, required: true },
     feature: {
@@ -26,7 +26,7 @@ const ProductSchema = new mongoose.Schema({
             height: '',
             width: '',
             weight: '',
-            color: [],
+            colors: [],
             model: [],
             madeIn: '',
         },

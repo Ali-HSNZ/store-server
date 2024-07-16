@@ -2,6 +2,25 @@
  * @swagger
  *  components:
  *      schemas:
+ *          ProductColor:
+ *              type: array
+ *              items:
+ *                  type: string
+ *                  enum:
+ *                      -   black
+ *                      -   white
+ *                      -   gray
+ *                      -   red
+ *                      -   blue
+ *                      -   green
+ *                      -   orange
+ *                      -   purple
+ */
+
+/**
+ * @swagger
+ *  components:
+ *      schemas:
  *          AddProduct:
  *              type: object
  *              required:
@@ -59,9 +78,8 @@
  *                  madeIn:
  *                      type: string
  *                      description: made product in ? country
- *                  color:
- *                      type: string
- *                      description: product color
+ *                  colors:
+ *                      $ref: '#/components/schemas/ProductColor'
  *                  model:
  *                      type: array
  *                      description: product models

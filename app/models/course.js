@@ -8,7 +8,7 @@ const EpisodeSchema = mongoose.Schema({
     time: { type: String, required: true },
 })
 
-const ChapterSchema = mongoose.Schema({
+const ChaptersSchema = mongoose.Schema({
     title: { type: String, required: true },
     text: { type: String, default: [] },
     episodes: { type: [EpisodeSchema], default: [] },
@@ -28,12 +28,15 @@ const Schema = new mongoose.Schema({
     price: { type: Number, default: 0 },
     discount: { type: Number, default: 0 },
     type: { type: String, default: 'free', required: true }, // free, cash, spatial
+    status: { type: String, default: 'notStarted' }, // notStarted, completed, holding
     time: { type: String, default: '00:00:00' },
     teacher: { type: mongoose.Types.ObjectId, ref: 'user', required: true },
-    chapter: { type: [ChapterSchema], default: [] },
+    chapters: { type: [ChaptersSchema], default: [] },
     students: { type: [mongoose.Types.ObjectId], default: [], ref: 'user' },
 })
 
+Schema.index({ title: 'text', short_text: 'text', text: 'text' })
+
 module.exports = {
-    CoursesModel: mongoose.model('course', Schema),
+    CourseModel: mongoose.model('course', Schema),
 }

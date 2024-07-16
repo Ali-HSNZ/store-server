@@ -13,6 +13,7 @@ router.post(
     uploadFile.array('images', 10),
     stringToArray('tags'),
     stringToArray('model'),
+    stringToArray('colors'),
     ProductController.add
 )
 

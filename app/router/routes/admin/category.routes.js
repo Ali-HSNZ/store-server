@@ -3,8 +3,8 @@ const { CategoryController } = require('../../../http/controllers/admin/category
 const router = require('express').Router()
 
 // GET
-router.get('/parents', CategoryController.getAllParents)
 router.get('/get-all', CategoryController.getAll)
+router.get('/parents', CategoryController.getAllParents)
 router.get('/list-of-all', CategoryController.getAllCategoryWithoutPopulate)
 router.get('/children/:parent', CategoryController.getChildOfParents)
 router.get('/get-by-id/:id', CategoryController.getById)

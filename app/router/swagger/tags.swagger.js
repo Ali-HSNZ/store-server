@@ -3,6 +3,8 @@
  *  tags:
  *      -   name: User-Authentication
  *          description: User authentication
+ *      -   name: Course (Admin-Panel)
+ *          description: courses management
  *      -   name: Product (Admin-Panel)
  *          description: products management
  *      -   name: Category (Admin-Panel)

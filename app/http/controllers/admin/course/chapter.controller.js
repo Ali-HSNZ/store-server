@@ -38,6 +38,29 @@ class ChapterController extends Controller {
             next(error)
         }
     }
+    async chaptersOfCourse(req, res, next) {
+        try {
+            const { id } = req.params
+
+            const course = await this.getChapterOfCourse(id)
+
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data: {
+                    course,
+                },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getChapterOfCourse(id) {
+        const chapters = await CourseModel.findOne({ _id: id }, { chapters: 1, _id: 0, title: 1 })
+        if (!chapters) throw createHttpError.NotFound('دوره ایی با این شناسه یافت نشد')
+        return chapters
+    }
+
     async checkCourseExist(courseId) {
         const { id } = await objectIdValidator.validateAsync({ id: courseId })
         const course = await CourseModel.findById(id)

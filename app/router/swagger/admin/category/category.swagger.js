@@ -1,16 +1,5 @@
 /**
  * @swagger
- * /admin/category/parents:
- *      get:
- *          tags: [Category (Admin-Panel)]
- *          summary: get All parents of category or category heads
- *          responses:
- *              200:
- *                  description: success
- */
-
-/**
- * @swagger
  * /admin/category/get-all:
  *      get:
  *          tags: [Category (Admin-Panel)]
@@ -19,6 +8,17 @@
  *              200:
  *                  description: success
  *
+ */
+
+/**
+ * @swagger
+ * /admin/category/parents:
+ *      get:
+ *          tags: [Category (Admin-Panel)]
+ *          summary: get All parents of category or category heads
+ *          responses:
+ *              200:
+ *                  description: success
  */
 
 /**

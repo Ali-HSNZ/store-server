@@ -23,7 +23,7 @@ const addBlogSchema = joi.object({
     category: joi
         .string()
         .pattern(MongoIdPattern)
-        .error(createHttpError.BadRequest('شناسه وارد شده صحیح نمی باشد')),
+        .error(createHttpError.BadRequest('شناسه دسته‌بندی صحیح نمی باشد')),
 })
 
 module.exports = { addBlogSchema }

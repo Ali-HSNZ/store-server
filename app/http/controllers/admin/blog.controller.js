@@ -2,7 +2,7 @@ const path = require('path')
 const { addBlogSchema } = require('../../validators/admin/blog.validation')
 const { Controller } = require('../controller')
 const { BlogModel } = require('../../../models/blogs')
-const { deleteFileInPublic } = require('../../../utils')
+const { deleteFileFromPublic } = require('../../../utils')
 const { default: mongoose } = require('mongoose')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
@@ -17,17 +17,14 @@ class BlogController extends Controller {
 
             const { title, text, short_text, category, tags } = blogData
 
-            const author = req.user._id
-            const image = req.body.image
-
             await BlogModel.create({
                 title,
-                image,
+                image: req.body.image,
                 text,
                 short_text,
                 category,
                 tags,
-                author,
+                author: req.user._id,
             })
 
             res.status(StatusCodes.CREATED).json({
@@ -37,7 +34,7 @@ class BlogController extends Controller {
                 },
             })
         } catch (error) {
-            if (req?.body?.image) deleteFileInPublic(req.body.image)
+            deleteFileFromPublic(req.body.fileUploadPath, req.body.filename)
             next(error)
         }
     }

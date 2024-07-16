@@ -59,7 +59,6 @@
  *                  madeIn:
  *                      type: string
  *                      description: made product in ? country
- *                      example: Iran
  *                  color:
  *                      type: string
  *                      description: product color

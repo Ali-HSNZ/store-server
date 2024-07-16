@@ -4,6 +4,11 @@
  *      get:
  *          tags: [Product (Admin-Panel)]
  *          summary: get all products list
+ *          parameters:
+ *              -   in: query
+ *                  name: search
+ *                  type: string
+ *                  description: search product (title, text, short_text)
  *          responses:
  *              200:
  *                  description: success

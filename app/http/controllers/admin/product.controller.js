@@ -1,14 +1,15 @@
-const { deleteFileInPublic, listOfImagesFromRequest } = require('../../../utils')
+const { listOfImagesFromRequest, deleteFileFromPublic } = require('../../../utils')
 const { addProductSchema } = require('../../validators/admin/product.validation')
 const { Controller } = require('../controller')
 const { ProductModel } = require('../../../models/products')
 const { objectIdValidator } = require('../../validators/public.validator')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
+
 class ProductController extends Controller {
     async add(req, res, next) {
         try {
-            const images = listOfImagesFromRequest(req.files, req.body.fileUploadPath)
+            const images = listOfImagesFromRequest(req.body.fileUploadPath, req.files)
             const productBody = await addProductSchema.validateAsync(req.body)
 
             const {
@@ -76,7 +77,7 @@ class ProductController extends Controller {
                 },
             })
         } catch (error) {
-            if (req?.body?.image) deleteFileInPublic(req.body.image)
+            deleteFileFromPublic(req.body.fileUploadPath, req.files, true)
             next(error)
         }
     }
@@ -105,8 +106,15 @@ class ProductController extends Controller {
     }
     async getAll(req, res, next) {
         try {
-            const products = await ProductModel.find({})
-            res.status(StatusCodes.OK).json({
+            const search = req?.query?.search || undefined
+
+            let products = []
+            if (search?.trim()?.length > 0) {
+                products = await ProductModel.find({ $text: { $search: new RegExp(search, 'ig') } })
+            } else {
+                products = await ProductModel.find({})
+            }
+            return res.status(StatusCodes.OK).json({
                 data: products,
                 statusCode: StatusCodes.OK,
                 message: 'لیست همه محصولات',

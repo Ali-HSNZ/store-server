@@ -2,7 +2,7 @@
  * @swagger
  *  components:
  *      schemas:
- *          CourseType: 
+ *          CourseType:
  *              type: string
  *              enum:
  *                  -   free

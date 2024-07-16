@@ -20,8 +20,7 @@ class CourseController extends Controller {
             }
             res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
-                message: 'لیست دوره ها',
-                data: courses,
+                data: { courses },
             })
         } catch (error) {
             next(error)
@@ -37,7 +36,8 @@ class CourseController extends Controller {
             if (!course) throw createHttpError.NotFound('دوره یافت نشد')
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
-                data: course,
+
+                data: { course },
             })
         } catch (error) {
             next(error)
@@ -76,7 +76,9 @@ class CourseController extends Controller {
 
             res.status(StatusCodes.CREATED).json({
                 statusCode: StatusCodes.CREATED,
-                message: 'دوره با موفقیت انجام شد',
+                data: {
+                    message: 'دوره با موفقیت انجام شد',
+                },
             })
         } catch (error) {
             deleteFileFromPublic(req.body.fileUploadPath, req.body.filename)

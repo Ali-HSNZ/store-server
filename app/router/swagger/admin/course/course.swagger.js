@@ -12,6 +12,10 @@
  *          responses:
  *              200:
  *                  description: success
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: "#/definitions/getAllCoursesDefinition"
  */
 
 /**

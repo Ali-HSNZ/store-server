@@ -10,7 +10,7 @@ const EpisodeSchema = mongoose.Schema({
 
 const ChaptersSchema = mongoose.Schema({
     title: { type: String, required: true },
-    text: { type: String, default: [] },
+    text: { type: String, default: '' },
     episodes: { type: [EpisodeSchema], default: [] },
 })
 

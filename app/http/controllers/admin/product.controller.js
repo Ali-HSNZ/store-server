@@ -38,8 +38,8 @@ class ProductController extends Controller {
             })
 
             res.status(StatusCodes.CREATED).json({
-                body: {
-                    statusCode: StatusCodes.CREATED,
+                statusCode: StatusCodes.CREATED,
+                data: {
                     message: 'محصول با موفقیت ایجاد شد',
                 },
             })
@@ -81,8 +81,9 @@ class ProductController extends Controller {
 
             res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
-                data,
-                message: 'به روز رسانی با موفقیت انجام شد',
+                data: {
+                    message: 'به روز رسانی با موفقیت انجام شد',
+                },
             })
         } catch (error) {
             next(error)
@@ -99,7 +100,9 @@ class ProductController extends Controller {
 
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
-                message: 'حذف محصول با موفقیت انجام شد',
+                data: {
+                    message: 'حذف محصول با موفقیت انجام شد',
+                },
             })
         } catch (error) {
             next(error)
@@ -116,9 +119,8 @@ class ProductController extends Controller {
                 products = await ProductModel.find({})
             }
             return res.status(StatusCodes.OK).json({
-                data: products,
                 statusCode: StatusCodes.OK,
-                message: 'لیست همه محصولات',
+                data: { products },
             })
         } catch (error) {
             next(error)
@@ -128,9 +130,9 @@ class ProductController extends Controller {
         try {
             const { id } = req.params
             const product = await this.findProductById(id)
-            return res.status(200).json({
-                statusCode: 200,
-                data: product,
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data: { product },
             })
         } catch (error) {
             next(error)

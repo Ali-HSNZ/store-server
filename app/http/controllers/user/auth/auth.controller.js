@@ -9,6 +9,7 @@ const {
     verifyRefreshToken,
 } = require('../../../../utils')
 const { USER_ROLE } = require('../../../../constants')
+const { StatusCodes } = require('http-status-codes')
 class AuthController extends Controller {
     async checkOTP(req, res, next) {
         try {
@@ -24,10 +25,12 @@ class AuthController extends Controller {
 
             if (+user.otp.expiresIn < Date.now())
                 throw createHttpError.Unauthorized('کد شما منقضی شده است')
+
             const accessToken = await signAccessToken(user.mobile)
             const refreshToken = await signRefreshToken(user.mobile)
 
-            return res.status(200).json({
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 data: {
                     accessToken,
                     refreshToken,
@@ -39,13 +42,13 @@ class AuthController extends Controller {
     }
     async refreshToken(req, res, next) {
         try {
-            const { refreshToken } = req.body
             const mobile = await verifyRefreshToken(req.body.refreshToken)
             const user = await UserModel.findOne({ mobile })
             const accessToken = await signAccessToken(user.mobile)
             const newRefreshToken = await signRefreshToken(user.mobile)
 
-            res.status(200).json({
+            res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 data: {
                     accessToken,
                     refreshToken: newRefreshToken,
@@ -75,9 +78,9 @@ class AuthController extends Controller {
             }
 
             // finally response code and user mobile
-            return res.status(201).json({
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 data: {
-                    statusCode: 201,
                     message: 'کد اعتبارسنجی با موفقیت برای شما ارسال شد',
                     code,
                     mobile,

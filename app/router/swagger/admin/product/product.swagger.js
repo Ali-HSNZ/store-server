@@ -53,6 +53,29 @@
 
 /**
  * @swagger
+ *  /admin/products/edit-by-id/{id}:
+ *      patch:
+ *          tags: [Product (Admin-Panel)]
+ *          summary: update product
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *                  description: id of product for update
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditProduct'
+ *          responses:
+ *              200:
+ *                  description: ok request
+ */
+
+/**
+ * @swagger
  *  /admin/products/delete-by-id/{id}:
  *      delete:
  *          tags: [Product (Admin-Panel)]

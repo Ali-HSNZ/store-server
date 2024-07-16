@@ -2,7 +2,7 @@ const path = require('path')
 const { addBlogSchema } = require('../../validators/admin/blog.validation')
 const { Controller } = require('../controller')
 const { BlogModel } = require('../../../models/blogs')
-const { deleteFileFromPublic } = require('../../../utils')
+const { deleteFileFromPublic, deleteInvalidPropertyInObject } = require('../../../utils')
 const { default: mongoose } = require('mongoose')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
@@ -136,16 +136,9 @@ class BlogController extends Controller {
                     .replace(/\\/g, '/')
             }
 
-            let badData = ['', ' ', '0', null, undefined]
             let blackListFields = ['likes', 'dislikes', 'bookmarks', 'comments', 'author']
 
-            Object.keys(data).forEach((key) => {
-                if (blackListFields.includes(key)) delete data[key]
-                if (typeof data[key] === 'string') data[key] = data[key].trim()
-                if (Array.isArray(data[key]) && Array.length > 0)
-                    data[key] = data[key].map((item) => item.trim())
-                if (badData.includes(data[key])) delete data[key]
-            })
+            deleteInvalidPropertyInObject(data, blackListFields)
 
             const updateResult = await BlogModel.updateOne(
                 {
@@ -157,9 +150,9 @@ class BlogController extends Controller {
             if (updateResult.modifiedCount === 0)
                 throw createHttpError.InternalServerError('به روزرسانی انجام نشد')
 
-            res.status(201).json({
+            res.status(StatusCodes.CREATED).json({
                 data: {
-                    statusCode: 201,
+                    statusCode: StatusCodes.CREATED,
                     message: 'به روزرسانی مقاله موفقیت انجام شد',
                 },
             })
@@ -186,12 +179,6 @@ class BlogController extends Controller {
                 statusCode: StatusCodes.OK,
                 message: 'مقاله با موفقیت حذف شد',
             })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async updateById(req, res, next) {
-        try {
         } catch (error) {
             next(error)
         }

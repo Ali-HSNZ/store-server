@@ -16,6 +16,15 @@ router.post(
     ProductController.add
 )
 
+// PATCH
+router.patch(
+    '/edit-by-id/:id',
+    uploadFile.array('images', 10),
+    stringToArray('tags'),
+    stringToArray('model'),
+    ProductController.edit
+)
+
 //DELETE
 router.delete('/delete-by-id/:id', ProductController.remove)
 

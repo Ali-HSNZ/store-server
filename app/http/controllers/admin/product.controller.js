@@ -1,4 +1,10 @@
-const { listOfImagesFromRequest, deleteFileFromPublic } = require('../../../utils')
+const {
+    listOfImagesFromRequest,
+    deleteFileFromPublic,
+    copyObject,
+    setProductFeatures,
+    deleteInvalidPropertyInObject,
+} = require('../../../utils')
 const { addProductSchema } = require('../../validators/admin/product.validation')
 const { Controller } = require('../controller')
 const { ProductModel } = require('../../../models/products')
@@ -12,48 +18,9 @@ class ProductController extends Controller {
             const images = listOfImagesFromRequest(req.body.fileUploadPath, req.files)
             const productBody = await addProductSchema.validateAsync(req.body)
 
-            const {
-                title,
-                text,
-                short_text,
-                category,
-                tags,
-                count,
-                price,
-                discount,
-                width,
-                height,
-                weight,
-                length,
-                model,
-                color,
-                madeIn,
-            } = productBody
+            const { title, text, short_text, category, tags, count, price, discount } = productBody
 
-            let feature = {}
-            let type = 'physical'
-
-            if (model || madeIn || color || width || height || weight || length) {
-                if (!model) feature.model = []
-                else feature.model = model
-
-                if (!madeIn) feature.madeIn = ''
-                else feature.madeIn = madeIn
-
-                if (!color) feature.color = ''
-                else feature.color = color
-
-                if (!width) feature.width = 0
-                else feature.width = width
-                if (!height) feature.height = 0
-                else feature.height = height
-                if (!weight) feature.weight = 0
-                else feature.weight = weight
-                if (!length) feature.length = 0
-                else feature.length = length
-            } else {
-                type = 'virtual'
-            }
+            const { feature, type } = setProductFeatures(req.body)
 
             await ProductModel.create({
                 title,
@@ -83,6 +50,40 @@ class ProductController extends Controller {
     }
     async edit(req, res, next) {
         try {
+            const { id } = req.params
+            await this.findProductById(id)
+
+            const { feature } = setProductFeatures(req.body)
+            const data = copyObject({ ...req.body, ...feature })
+            data.images = listOfImagesFromRequest(req.body.fileUploadPath, req.files)
+            data.feature = feature
+
+            let blackListFields = [
+                'likes',
+                'dislikes',
+                'bookmarks',
+                'comments',
+                'supplier',
+                'width',
+                'height',
+                'weight',
+                'length',
+                'fileUploadPath',
+                'filename',
+            ]
+
+            deleteInvalidPropertyInObject(data, blackListFields)
+
+            const updateProductResult = await ProductModel.updateOne({ _id: id }, { $set: data })
+
+            if (updateProductResult.modifiedCount === 0)
+                createHttpError.InternalServerError('خطای سرور')
+
+            res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data,
+                message: 'به روز رسانی با موفقیت انجام شد',
+            })
         } catch (error) {
             next(error)
         }

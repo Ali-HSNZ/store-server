@@ -52,28 +52,3 @@
  *                  description: success
  *
  */
-
-/**
- * @swagger
- *  /admin/courses/add-chapter/{id}:
- *      put:
- *          tags: [Course (Admin-Panel)]
- *          summary: add chapter for course
- *          parameters:
- *              -   in: path
- *                  name: id
- *                  type: string
- *                  required: true
- *                  description: id of course
- *
- *          requestBody:
- *              required: true
- *              content:
- *                  application/x-www-form-urlencoded:
- *                      schema:
- *                          $ref: "#/components/schemas/AddChapter"
- *          responses:
- *              200:
- *                  description: success
- *
- */

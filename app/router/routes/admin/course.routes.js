@@ -10,9 +10,6 @@ router.get('/get-by-id/:id', CourseController.getById)
 // POST
 router.post('/add', uploadFile.single('image'), stringToArray('tags'), CourseController.add)
 
-// PUT
-router.put('/add-chapter/:id', CourseController.addChapter)
-
 module.exports = {
     CourseRoutes: router,
 }

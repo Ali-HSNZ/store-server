@@ -86,42 +86,6 @@ class CourseController extends Controller {
             next(error)
         }
     }
-
-    async addChapter(req, res, next) {
-        try {
-            const { id } = req.params
-            const { title, text } = req.body
-            await this.checkCourseExist(id)
-            const chapterResult = await CourseModel.updateOne(
-                { _id: id },
-                {
-                    $push: {
-                        chapters: {
-                            title,
-                            text,
-                            episode: [],
-                        },
-                    },
-                }
-            )
-            if (chapterResult.modifiedCount === 0)
-                throw createHttpError.InternalServerError('فصل ایجاد نشد')
-
-            return res.status(StatusCodes.CREATED).json({
-                statusCode: StatusCodes.CREATED,
-                data: {
-                    message: 'فصل با موفقیت ایجاد شد',
-                },
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async checkCourseExist(courseId) {
-        const { id } = await objectIdValidator.validateAsync({ id: courseId })
-        const course = await CourseModel.findById(id)
-        if (!course) throw createHttpError.NotFound('دوره یافت نشد')
-    }
 }
 
 module.exports = {

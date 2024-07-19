@@ -3,7 +3,7 @@
  *  /admin/episodes/add/{courseId}/{chapterId}:
  *      post:
  *          tags: [Episode (Admin-Panel)]
- *          summary: create new episode for course
+ *          summary: create new episode of course
  *          parameters:
  *              -   in: path
  *                  name: courseId
@@ -19,6 +19,29 @@
  *                  multipart/form-data:
  *                      schema:
  *                          $ref: '#/components/schemas/AddEpisode'
+ *          responses:
+ *              201:
+ *                  description: success
+ *
+ */
+
+/**
+ * @swagger
+ *  /admin/episodes/edit-by-id/{id}:
+ *      patch:
+ *          tags: [Episode (Admin-Panel)]
+ *          summary: update episode of course
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  required: true
+ *                  description: enter episode id
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditEpisode'
  *          responses:
  *              201:
  *                  description: success

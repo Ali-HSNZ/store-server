@@ -3,7 +3,12 @@ const { addEpisodeSchema } = require('../../../validators/admin/course.validatio
 const { Controller } = require('../../controller')
 
 const { default: getVideoDurationInSeconds } = require('get-video-duration')
-const { getVideoTime, deleteFileFromPublic } = require('../../../../utils')
+const {
+    getVideoTime,
+    deleteFileFromPublic,
+    deleteInvalidPropertyInObject,
+    copyObject,
+} = require('../../../../utils')
 const { CourseModel } = require('../../../../models/course')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
@@ -54,6 +59,68 @@ class EpisodeController extends Controller {
         }
     }
 
+    async edit(req, res, next) {
+        try {
+            const { id } = req.params
+
+            const episode = await this.getOneEpisode(id)
+
+            // check valid id
+            await objectIdValidator.validateAsync({ id })
+
+            const { filename, fileUploadPath } = req.body
+
+            const blackList = ['_id']
+
+            if (filename && fileUploadPath) {
+                const fileAddress = path.join(fileUploadPath, filename)
+                req.body.videoAddress = fileAddress.replace(/\\/g, '/')
+                const videoUrl = `${process.env.APPLICATION_BASE_URL}:${process.env.APPLICATION_PORT}/${req.body.videoAddress}`
+
+                // video seconds
+                const seconds = await getVideoDurationInSeconds(videoUrl)
+
+                req.body.time = getVideoTime(seconds)
+                blackList.push('filename')
+                blackList.push('fileUploadPath')
+            } else {
+                blackList.push('time')
+                blackList.push('videoAddress')
+            }
+
+            const data = req.body
+
+            // remove badData from body
+            deleteInvalidPropertyInObject(data, blackList)
+
+            const newEpisodeData = { ...episode, ...data }
+
+            const editEpisodeResult = await CourseModel.updateOne(
+                {
+                    'chapters.episodes._id': id,
+                },
+                {
+                    $set: {
+                        'chapters.$.episodes': newEpisodeData,
+                    },
+                }
+            )
+
+            if (editEpisodeResult.modifiedCount === 0)
+                throw createHttpError.InternalServerError('خطای سرور')
+
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data: {
+                    message: 'ویرایش اپیزود با موفقیت انجام شد',
+                },
+            })
+        } catch (error) {
+            deleteFileFromPublic(req.body.fileUploadPath, req.body.filename)
+            next(error)
+        }
+    }
+
     async remove(req, res, next) {
         try {
             const { id } = req.params
@@ -85,6 +152,23 @@ class EpisodeController extends Controller {
         } catch (error) {
             next(error)
         }
+    }
+
+    async getOneEpisode(id) {
+        // check valid id
+        await objectIdValidator.validateAsync({ id })
+
+        const course = await CourseModel.findOne(
+            { 'chapters.episodes._id': id },
+            {
+                'chapters.episodes.$': 1,
+            }
+        )
+        const episode = course?.chapters?.[0]?.episodes?.[0]
+
+        if (!course || !episode) throw createHttpError.NotFound('اپیزود یافت نشد')
+
+        return copyObject(episode)
     }
 
     async checkExistCourseAndChapter({ courseId, chapterId }) {

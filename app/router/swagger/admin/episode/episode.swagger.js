@@ -24,3 +24,19 @@
  *                  description: success
  *
  */
+
+/**
+ * @swagger
+ * /admin/episodes/remove/{id}:
+ *  delete:
+ *      tags: [Episode (Admin-Panel)]
+ *      summary: delete episode by id
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              type: string
+ *              required: true
+ *      responses:
+ *          200:
+ *              description: success
+ */

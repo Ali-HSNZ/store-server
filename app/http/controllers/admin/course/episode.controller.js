@@ -8,6 +8,7 @@ const { CourseModel } = require('../../../../models/course')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
 const { default: mongoose } = require('mongoose')
+const { objectIdValidator } = require('../../../validators/public.validator')
 
 class EpisodeController extends Controller {
     async add(req, res, next) {
@@ -49,6 +50,39 @@ class EpisodeController extends Controller {
             })
         } catch (error) {
             deleteFileFromPublic(req.body.fileUploadPath, req.body.filename)
+            next(error)
+        }
+    }
+
+    async remove(req, res, next) {
+        try {
+            const { id } = req.params
+
+            await objectIdValidator.validateAsync({ id })
+
+            const removeEpisodeResult = await CourseModel.updateOne(
+                {
+                    'chapters.episodes._id': id,
+                },
+                {
+                    $pull: {
+                        'chapters.$.episodes': {
+                            _id: id,
+                        },
+                    },
+                }
+            )
+
+            if (removeEpisodeResult.modifiedCount === 0)
+                throw createHttpError.InternalServerError('خطای سرور')
+
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data: {
+                    message: 'حذف اپیزود با موفقیت انجام شد',
+                },
+            })
+        } catch (error) {
             next(error)
         }
     }

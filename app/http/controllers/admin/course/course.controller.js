@@ -14,9 +14,29 @@ class CourseController extends Controller {
 
             let courses = []
             if (search?.trim()?.length > 0) {
-                courses = await CourseModel.find({ $text: { $search: new RegExp(search, 'ig') } })
+                courses = await CourseModel.find({
+                    $text: { $search: new RegExp(search, 'ig') },
+                })
+                    // populate teacher and category details
+                    .populate([
+                        { path: 'category', select: { title: 1 } },
+                        {
+                            path: 'teacher',
+                            select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
+                        },
+                    ])
             } else {
-                courses = await CourseModel.find({}).sort({ _id: -1 })
+                courses = await CourseModel.find({})
+                    .sort({ _id: -1 })
+                    // populate teacher and category details
+
+                    .populate([
+                        { path: 'category', select: { title: 1 } },
+                        {
+                            path: 'teacher',
+                            select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
+                        },
+                    ])
             }
             res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
@@ -31,7 +51,13 @@ class CourseController extends Controller {
         try {
             const courseId = req.params.id
             const { id } = await objectIdValidator.validateAsync({ id: courseId })
-            const course = await CourseModel.findById(id)
+            const course = await CourseModel.findById(id).populate([
+                { path: 'category', select: { title: 1 } },
+                {
+                    path: 'teacher',
+                    select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
+                },
+            ])
 
             if (!course) throw createHttpError.NotFound('دوره یافت نشد')
             return res.status(StatusCodes.OK).json({

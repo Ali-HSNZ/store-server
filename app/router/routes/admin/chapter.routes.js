@@ -6,7 +6,13 @@ const router = require('express').Router()
 router.get('/get-all/:id', ChapterController.chaptersOfCourse)
 
 // PUT
-router.put('/add/:id', ChapterController.addChapter)
+router.post('/add/:id', ChapterController.addChapter)
+
+// PATCH
+router.patch('/edit-by-id/:id', ChapterController.updateChapterById)
+
+// DELETE
+router.delete('/remove/:id', ChapterController.remove)
 
 module.exports = {
     ChapterRoutes: router,

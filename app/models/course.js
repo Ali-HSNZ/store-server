@@ -4,8 +4,9 @@ const { CommentSchema } = require('./public.schema')
 const EpisodeSchema = mongoose.Schema({
     title: { type: String, required: true },
     text: { type: String, required: true },
-    type: { type: String, default: 'free' },
+    type: { type: String, default: 'unlock' }, // lock | unlock
     time: { type: String, required: true },
+    videoAddress: { type: String, required: true },
 })
 
 const ChaptersSchema = mongoose.Schema({

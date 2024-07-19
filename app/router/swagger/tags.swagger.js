@@ -3,10 +3,12 @@
  *  tags:
  *      -   name: User-Authentication
  *          description: User authentication
- *      -   name: Chapter (Admin-Panel)
- *          description: chapter management
  *      -   name: Course (Admin-Panel)
  *          description: courses management
+ *      -   name: Chapter (Admin-Panel)
+ *          description: chapter management
+ *      -   name: Episode (Admin-Panel)
+ *          description: episode management
  *      -   name: Product (Admin-Panel)
  *          description: products management
  *      -   name: Category (Admin-Panel)

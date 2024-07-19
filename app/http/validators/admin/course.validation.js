@@ -33,4 +33,22 @@ const addCourseSchema = joi.object({
     fileUploadPath: joi.allow(),
 })
 
-module.exports = { addCourseSchema }
+const addEpisodeSchema = joi.object({
+    title: joi
+        .string()
+        .min(3)
+        .max(30)
+        .error(createHttpError.BadRequest('عنوان دوره صحیح نمی باشد')),
+    text: joi.string().error(createHttpError.BadRequest('متن وارد شده صحیح نمی باشد')),
+    type: joi
+        .string()
+        .regex(/(lock|unlock)/i)
+        .error(createHttpError.BadRequest('نوع وارد شده معتبر نیست')),
+    fileUploadPath: joi.allow(),
+    filename: joi
+        .string()
+        .pattern(/(\.mp4|\.mpg|\.avi|\.mkv)$/)
+        .error(createHttpError.BadRequest('فرمت ویدیو ارسال شده صحیح نمی باشد')),
+})
+
+module.exports = { addCourseSchema, addEpisodeSchema }

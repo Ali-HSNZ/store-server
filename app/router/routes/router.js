@@ -7,6 +7,7 @@ const { verifyAccessToken, checkRole } = require('../../http/middleware/verifyAc
 const { ProductRoutes } = require('./admin/product.routes')
 const { CourseRoutes } = require('./admin/course.routes')
 const { ChapterRoutes } = require('./admin/chapter.routes')
+const { EpisodeRoutes } = require('./admin/episode.routes')
 
 // PUBLIC ROUTES
 router.use('/auth', AuthRoutes)
@@ -17,6 +18,7 @@ router.use('/admin/blogs', verifyAccessToken, checkRole('ADMIN'), BlogRoutes)
 router.use('/admin/products', verifyAccessToken, checkRole('ADMIN'), ProductRoutes)
 router.use('/admin/courses', verifyAccessToken, checkRole('ADMIN'), CourseRoutes)
 router.use('/admin/chapters', verifyAccessToken, checkRole('ADMIN'), ChapterRoutes)
+router.use('/admin/episodes', verifyAccessToken, checkRole('ADMIN'), EpisodeRoutes)
 
 module.exports = {
     AllRoutes: router,

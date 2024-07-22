@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { CommentSchema } = require('./public.schema')
+const { getTimeOfCourse } = require('../utils')
 
 const EpisodeSchema = mongoose.Schema(
     {
@@ -42,7 +43,6 @@ const Schema = new mongoose.Schema(
         discount: { type: Number, default: 0 },
         type: { type: String, default: 'free', required: true }, // free, cash, spatial
         status: { type: String, default: 'notStarted' }, // notStarted, completed, holding
-        time: { type: String, default: '00:00:00' },
         teacher: { type: mongoose.Types.ObjectId, ref: 'user', required: true },
         chapters: { type: [ChaptersSchema], default: [] },
         students: { type: [mongoose.Types.ObjectId], default: [], ref: 'user' },
@@ -55,6 +55,10 @@ const Schema = new mongoose.Schema(
 )
 
 Schema.index({ title: 'text', short_text: 'text', text: 'text' })
+
+Schema.virtual('totalTime').get(function () {
+    return getTimeOfCourse(this.chapters)
+})
 
 Schema.virtual('imageUrl').get(function () {
     return `${process.env.APPLICATION_BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`

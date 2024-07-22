@@ -10,9 +10,11 @@ const copyObject = require('./copy-object')
 const setProductFeatures = require('./set-product-features')
 const deleteInvalidPropertyInObject = require('./delete-invalid-property-in-object')
 const getVideoTime = require('./get-video-time')
+const getTimeOfCourse = require('./get-time-of-course')
 
 module.exports = {
     uploadVideo,
+    getTimeOfCourse,
     getVideoTime,
     copyObject,
     deleteInvalidPropertyInObject,

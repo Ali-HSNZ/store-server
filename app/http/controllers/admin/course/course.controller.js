@@ -98,7 +98,6 @@ class CourseController extends Controller {
                 price,
                 discount,
                 image,
-                time: '00:00:00',
                 status: 'notStarted',
                 teacher,
                 type,
@@ -109,7 +108,7 @@ class CourseController extends Controller {
             res.status(StatusCodes.CREATED).json({
                 statusCode: StatusCodes.CREATED,
                 data: {
-                    message: 'دوره با موفقیت انجام شد',
+                    message: 'دوره با موفقیت افزوده شد',
                 },
             })
         } catch (error) {
@@ -129,7 +128,6 @@ class CourseController extends Controller {
             const { filename, fileUploadPath } = req.body
 
             const blackList = [
-                'time',
                 'chapters',
                 'episodes',
                 'students',

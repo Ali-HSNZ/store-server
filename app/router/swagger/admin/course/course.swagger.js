@@ -52,3 +52,28 @@
  *                  description: success
  *
  */
+
+/**
+ * @swagger
+ *  /admin/courses/edit-by-id/{id}:
+ *      patch:
+ *          tags: [Course (Admin-Panel)]
+ *          summary: update course
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  required: true
+ *                  type: string
+ *                  description: course id
+ *
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/EditCourse'
+ *          responses:
+ *              201:
+ *                  description: success
+ *
+ */

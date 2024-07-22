@@ -24,4 +24,4 @@ const deleteFileFromPublic = (fileUploadPath, imagePath, isMultiple = false) => 
     }
 }
 
-module.exports = deleteFileFromPublic
+module.exports = { deleteFileFromPublic, deleteFileWithPathHandler }

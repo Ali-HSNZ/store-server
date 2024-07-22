@@ -1,12 +1,23 @@
 const mongoose = require('mongoose')
 const { CommentSchema } = require('./public.schema')
 
-const EpisodeSchema = mongoose.Schema({
-    title: { type: String, required: true },
-    text: { type: String, required: true },
-    type: { type: String, default: 'unlock' }, // lock | unlock
-    time: { type: String, required: true },
-    videoAddress: { type: String, required: true },
+const EpisodeSchema = mongoose.Schema(
+    {
+        title: { type: String, required: true },
+        text: { type: String, required: true },
+        type: { type: String, default: 'unlock' }, // lock | unlock
+        time: { type: String, required: true },
+        videoAddress: { type: String, required: true },
+    },
+    {
+        toJSON: {
+            virtuals: true,
+        },
+    }
+)
+
+EpisodeSchema.virtual('videoUrl').get(function () {
+    return `${process.env.APPLICATION_BASE_URL}:${process.env.APPLICATION_PORT}/${this.videoAddress}`
 })
 
 const ChaptersSchema = mongoose.Schema({
@@ -44,6 +55,10 @@ const Schema = new mongoose.Schema(
 )
 
 Schema.index({ title: 'text', short_text: 'text', text: 'text' })
+
+Schema.virtual('imageUrl').get(function () {
+    return `${process.env.APPLICATION_BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`
+})
 
 module.exports = {
     CourseModel: mongoose.model('course', Schema),

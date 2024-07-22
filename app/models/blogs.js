@@ -15,8 +15,16 @@ const Schema = new mongoose.Schema(
         dislikes: { type: [mongoose.Types.ObjectId], ref: 'user', default: [] },
         bookmarks: { type: [mongoose.Types.ObjectId], ref: 'user', default: [] },
     },
-    { timestamps: true, versionKey: false }
+    {
+        toJSON: {
+            virtuals: true,
+        },
+    }
 )
+
+Schema.virtual('imageUrl').get(function () {
+    return `${process.env.APPLICATION_BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`
+})
 
 module.exports = {
     BlogModel: mongoose.model('blog', Schema),

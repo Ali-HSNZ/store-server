@@ -3,6 +3,8 @@
  *  tags:
  *      -   name: User-Authentication
  *          description: User authentication
+ *      -   name: User (Admin-Panel)
+ *          description: users management
  *      -   name: Course (Admin-Panel)
  *          description: courses management
  *      -   name: Chapter (Admin-Panel)
@@ -15,6 +17,4 @@
  *          description: All method about categories
  *      -   name: Blog (Admin-Panel)
  *          description: All method about blogs
- *      -   name: Admin-Panel
- *          description: Actions of admin (add, remove, edit, and any do)
  */

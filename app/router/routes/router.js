@@ -8,6 +8,7 @@ const { ProductRoutes } = require('./admin/product.routes')
 const { CourseRoutes } = require('./admin/course.routes')
 const { ChapterRoutes } = require('./admin/chapter.routes')
 const { EpisodeRoutes } = require('./admin/episode.routes')
+const { UserRoutes } = require('./admin/user.routes')
 
 // PUBLIC ROUTES
 router.use('/auth', AuthRoutes)
@@ -19,6 +20,7 @@ router.use('/admin/products', verifyAccessToken, checkRole('ADMIN'), ProductRout
 router.use('/admin/courses', verifyAccessToken, checkRole('ADMIN'), CourseRoutes)
 router.use('/admin/chapters', verifyAccessToken, checkRole('ADMIN'), ChapterRoutes)
 router.use('/admin/episodes', verifyAccessToken, checkRole('ADMIN'), EpisodeRoutes)
+router.use('/admin/users', verifyAccessToken, checkRole('ADMIN'), UserRoutes)
 
 module.exports = {
     AllRoutes: router,

@@ -3,6 +3,8 @@
  *  tags:
  *      -   name: User-Authentication
  *          description: User authentication
+ *      -   name: RBAC (Admin-Panel)
+ *          description: RoleBaseAccessControl system, create and manage role and permissions
  *      -   name: User (Admin-Panel)
  *          description: users management
  *      -   name: Course (Admin-Panel)

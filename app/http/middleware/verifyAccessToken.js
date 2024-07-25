@@ -20,10 +20,7 @@ const verifyAccessToken = (req, res, next) => {
                 if (err) throw createHttpError.Unauthorized('مجددا وارد حساب کاربری خود شوید')
 
                 // find user from DB with mobile
-                const user = await UserModel.findOne(
-                    { mobile: payload.mobile },
-                    { mobile: 1, roles: 1 }
-                )
+                const user = await UserModel.findOne({ mobile: payload.mobile }, { otp: 0, __v: 0 })
 
                 //  if not Exist User throw error
                 if (!user) throw createHttpError.Unauthorized('مجددا وارد حساب کاربری خود شوید')
@@ -42,16 +39,4 @@ const verifyAccessToken = (req, res, next) => {
     }
 }
 
-const checkRole = (role) => {
-    return (req, res, next) => {
-        try {
-            const user = req.user
-            if (user.roles.includes(role)) return next()
-            throw createHttpError.Forbidden('شما به این قسمت دسترسی ندارید')
-        } catch (error) {
-            next(error)
-        }
-    }
-}
-
-module.exports = { verifyAccessToken, checkRole }
+module.exports = { verifyAccessToken }

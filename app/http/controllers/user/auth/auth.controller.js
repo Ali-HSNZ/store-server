@@ -8,7 +8,7 @@ const {
     signAccessToken,
     verifyRefreshToken,
 } = require('../../../../utils')
-const { USER_ROLE } = require('../../../../constants')
+const { ROLES } = require('../../../../constants')
 const { StatusCodes } = require('http-status-codes')
 class AuthController extends Controller {
     async checkOTP(req, res, next) {
@@ -110,7 +110,7 @@ class AuthController extends Controller {
         const createUser = await UserModel.create({
             mobile,
             otp,
-            roles: [USER_ROLE],
+            role: ROLES.USER,
         })
         return !!createUser
     }

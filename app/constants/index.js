@@ -11,7 +11,7 @@ module.exports = {
         USER: ['profile'],
         ADMIN: ['all'],
         CONTENT_MANAGER: ['course', 'blog', 'category', 'product'],
-        TEACHER: ['course', 'blog',],
+        TEACHER: ['course', 'blog'],
         SUPPLIER: ['product'],
         ALL: 'all',
     }),

@@ -8,7 +8,7 @@ const { copyObject } = require('../../../../utils')
 class PermissionController extends Controller {
     async getAll(req, res, next) {
         try {
-            const permissions = await PermissionsModel.find({})
+            const permissions = await PermissionsModel.find({}, { __v: 0 })
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
                 data: {

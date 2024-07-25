@@ -9,7 +9,10 @@ const { copyObject, deleteInvalidPropertyInObject } = require('../../../../utils
 class RoleController extends Controller {
     async getAll(req, res, next) {
         try {
-            const roles = await RoleModel.find({})
+            const roles = await RoleModel.find(
+                {},
+                { title: 1, permissions: 1, description: 1 }
+            ).populate([{ path: 'permissions', select: { __v: 0 } }])
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
                 data: {
@@ -22,11 +25,11 @@ class RoleController extends Controller {
     }
     async add(req, res, next) {
         try {
-            const { title, permissions } = await addRoleSchema.validateAsync(req.body)
+            const { title, permissions, description } = await addRoleSchema.validateAsync(req.body)
 
             await this.findByTitle(title)
 
-            const role = await RoleModel.create({ permissions, title })
+            const role = await RoleModel.create({ permissions, title, description })
 
             if (!role) throw createHttpError.InternalServerError('خطای سرور')
             return res.status(StatusCodes.CREATED).json({

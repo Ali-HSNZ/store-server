@@ -6,6 +6,7 @@ const Schema = new mongoose.Schema(
         description: { type: String, default: '' },
     },
     {
+        id: 0,
         toJSON: {
             virtuals: true,
         },

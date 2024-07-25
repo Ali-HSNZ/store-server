@@ -25,6 +25,21 @@ class UserController extends Controller {
             next(error)
         }
     }
+
+    async profile(req, res, next) {
+        try {
+            const user = req.user
+            return res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
+                data: {
+                    profile: user,
+                },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async edit(req, res, next) {
         try {
             const id = req.user._id

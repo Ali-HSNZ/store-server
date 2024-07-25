@@ -16,6 +16,17 @@
 
 /**
  * @swagger
+ *  /admin/users/profile:
+ *      get:
+ *          tags: [User (Admin-Panel)]
+ *          summary: get profile
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+
+/**
+ * @swagger
  *  /admin/users/edit:
  *      patch:
  *          tags: [User (Admin-Panel)]

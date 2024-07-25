@@ -15,16 +15,21 @@ const { StatusCodes } = require('http-status-codes')
 class ProductController extends Controller {
     async add(req, res, next) {
         try {
-            const images = listOfImagesFromRequest(req.body.fileUploadPath, req.files)
-            const productBody = await addProductSchema.validateAsync(req.body)
+            let images = []
 
-            const { title, text, short_text, category, tags, count, price, discount } = productBody
+            if (req.files.length) {
+                images = listOfImagesFromRequest(req.body.fileUploadPath, req.files)
+            }
+
+            const { title, text, short_text, category, tags, colors, count, price, discount } =
+                await addProductSchema.validateAsync(req.body)
 
             const { feature, type } = setProductFeatures(req.body)
 
             await ProductModel.create({
                 title,
                 text,
+                colors,
                 short_text,
                 category,
                 tags,

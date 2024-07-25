@@ -11,9 +11,7 @@ router.get('/get-by-id/:id', ProductController.getOne)
 router.post(
     '/add',
     uploadFile.array('images', 10),
-    stringToArray('tags'),
-    stringToArray('model'),
-    stringToArray('colors'),
+    stringToArray('tags', 'model', 'colors'),
     ProductController.add
 )
 
@@ -21,8 +19,7 @@ router.post(
 router.patch(
     '/edit-by-id/:id',
     uploadFile.array('images', 10),
-    stringToArray('tags'),
-    stringToArray('model'),
+    stringToArray('tags', 'model', 'colors'),
     ProductController.edit
 )
 

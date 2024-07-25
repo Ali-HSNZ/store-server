@@ -29,14 +29,16 @@ const addProductSchema = joi.object({
         .number()
         .empty()
         .error(createHttpError.BadRequest(' ارتفاع وارد شده صحیح نمی‌باشد')),
+    images: joi.allow(),
     width: joi.number().empty().error(createHttpError.BadRequest(' عرض وارد شده صحیح نمی‌باشد')),
     fileUploadPath: joi.allow(),
+
     filename: joi
         .string()
         .pattern(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
         .error(createHttpError.BadRequest('تصویر ارسال شده صحیح نمی باشد')),
-    color: joi
-        .string()
+    colors: joi
+        .array()
         .optional()
         .error(createHttpError.BadRequest('رنگ Hex وارد شده صحیح نمی‌باشد')),
     madeIn: joi

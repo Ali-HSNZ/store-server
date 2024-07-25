@@ -1,21 +1,26 @@
-const stringToArray = (filed) => {
+const stringToArray = (...args) => {
     return (req, res, next) => {
-        if (req.body[filed]) {
-            if (typeof req.body[filed] === 'string') {
-                if (req.body[filed].indexOf('#') >= 0) {
-                    req.body[filed] = req.body[filed].split('#').map((item) => item.trim())
+        const fields = args
+        fields.forEach((field) => {
+            if (req.body[field]) {
+                if (typeof req.body[field] === 'string') {
+                    if (req.body[field].indexOf('#') >= 0) {
+                        req.body[field] = req.body[field].split('#').map((item) => item.trim())
+                    }
+                    if (req.body[field].indexOf(',') >= 0) {
+                        req.body[field] = req.body[field].split(',').map((item) => item.trim())
+                    } else {
+                        req.body[field] = [req.body[field]]
+                    }
                 }
-                if (req.body[filed].indexOf(',') >= 0) {
-                    req.body[filed] = req.body[filed].split(',').map((item) => item.trim())
-                } else {
-                    req.body[filed] = [req.body[filed]]
+                if (Array.isArray(req.body[field])) {
+                    req.body[field] = req.body[field].map((item) => item.trim())
+                    req.body[field] = [...new Set(req.body[field])]
                 }
-            } else if (req.body[filed].constructor.toString().toLowerCase().indexOf('array') >= 0) {
-                req.body[filed] = req.body[filed].map((item) => item.trim())
+            } else {
+                req.body[field] = []
             }
-        } else {
-            req.body[filed] = []
-        }
+        })
         next()
     }
 }

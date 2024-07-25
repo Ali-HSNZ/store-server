@@ -3,13 +3,9 @@
  *  components:
  *      schemas:
  *          Permissions:
- *              type: string
- *              enum:
- *                  -   blog
- *                  -   course
- *                  -   product
+ *              type: array
+ *              description: permission id for role
  */
-
 
 /**
  * @swagger
@@ -19,10 +15,14 @@
  *              type: object
  *              required:
  *                  -   title
+ *                  -   description
  *              properties:
  *                  title:
  *                      type: string
  *                      description: role title
+ *                  description:
+ *                      type: string
+ *                      description: role description
  *                  permissions:
  *                      $ref: '#/components/schemas/Permissions'
  *          EditRole:
@@ -31,6 +31,9 @@
  *                  title:
  *                      type: string
  *                      description: role title
+ *                  description:
+ *                      type: string
+ *                      description: role description
  *                  permissions:
  *                      $ref: '#/components/schemas/Permissions'
  *

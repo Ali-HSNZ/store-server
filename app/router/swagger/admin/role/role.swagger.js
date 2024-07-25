@@ -1,14 +1,14 @@
 /**
  * @swagger
- *  /admin/role/get-all:
+ * /admin/role/get-all:
  *      get:
  *          tags: [RBAC (Admin-Panel)]
- *          summary: role list
+ *          summary: get All roles
  *          responses:
  *              200:
  *                  description: success
+ *
  */
-
 
 /**
  * @swagger
@@ -42,27 +42,25 @@
  *              content:
  *                  application/x-www-form-urlencoded:
  *                      schema:
- *                          $ref: '#/components/schemas/AddRole'
+ *                          $ref: '#/components/schemas/EditRole'
  *          responses:
  *              200:
  *                  description: success
  */
 
-
 /**
  * @swagger
- *  /admin/role/remove/{id}:
+ *  /admin/role/remove/{field}:
  *      delete:
  *          tags: [RBAC (Admin-Panel)]
  *          summary: delete role
  *          parameters:
  *              -   in: path
- *                  name: id
+ *                  name: field
  *                  type: string
  *                  required: true
- *                  description: role id 
+ *                  description: role id or role title
  *          responses:
  *              200:
  *                  description: success
  */
-

@@ -1,7 +1,7 @@
-const { RoleController } = require('../../../http/controllers/admin/RBAC/role.controller')
-const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')
-
 const router = require('express').Router()
+
+const { RoleController } = require('../../../../http/controllers/admin/RBAC/role.controller')
+const { stringToArray } = require('../../../../http/middleware/string-to-array.middleware')
 
 // GET
 router.get('/get-all', RoleController.getAll)

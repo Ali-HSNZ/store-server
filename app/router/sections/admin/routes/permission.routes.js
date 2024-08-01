@@ -2,7 +2,7 @@ const router = require('express').Router()
 
 const {
     PermissionController,
-} = require('../../../http/controllers/admin/RBAC/permission.controller')
+} = require('../../../../http/controllers/admin/RBAC/permission.controller')
 
 // GET
 router.get('/get-all', PermissionController.getAll)

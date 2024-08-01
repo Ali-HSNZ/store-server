@@ -1,6 +1,8 @@
-const { ChapterController } = require('../../../http/controllers/admin/course/chapter.controller')
-
 const router = require('express').Router()
+
+const {
+    ChapterController,
+} = require('../../../../http/controllers/admin/course/chapter.controller')
 
 // GET
 router.get('/get-all/:id', ChapterController.chaptersOfCourse)

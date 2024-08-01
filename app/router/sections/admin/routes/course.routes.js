@@ -1,7 +1,9 @@
 const router = require('express').Router()
-const { CourseController } = require('../../../http/controllers/admin/course/course.controller')
-const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')
-const { uploadFile } = require('../../../utils')
+
+const { CourseController } = require('../../../../http/controllers/admin/course/course.controller')
+
+const { stringToArray } = require('../../../../http/middleware/string-to-array.middleware')
+const { uploadFile } = require('../../../../utils')
 
 // GET
 router.get('/get-all', CourseController.getAll)

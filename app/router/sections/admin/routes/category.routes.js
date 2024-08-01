@@ -1,8 +1,8 @@
+const router = require('express').Router()
+
 const {
     CategoryController,
-} = require('../../../http/controllers/admin/category/category.controller')
-
-const router = require('express').Router()
+} = require('../../../../http/controllers/admin/category/category.controller')
 
 // GET
 router.get('/get-all', CategoryController.getAll)

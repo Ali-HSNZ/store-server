@@ -1,7 +1,8 @@
-const { BlogController } = require('../../../http/controllers/admin/blog/blog.controller')
-const { uploadFile } = require('../../../utils')
 const router = require('express').Router()
-const { stringToArray } = require('../../../http/middleware/string-to-array.middleware')
+
+const { BlogController } = require('../../../../http/controllers/admin/blog/blog.controller')
+const { uploadFile } = require('../../../../utils')
+const { stringToArray } = require('../../../../http/middleware/string-to-array.middleware')
 
 // GET
 router.get('/get-all', BlogController.getAll)

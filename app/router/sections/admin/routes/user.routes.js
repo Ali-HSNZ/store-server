@@ -1,8 +1,8 @@
-const { PERMISSIONS } = require('../../../constants')
-const { UserController } = require('../../../http/controllers/admin/user/user.controller')
-const { checkPermissions } = require('../../../http/middleware/permission.guard')
-
 const router = require('express').Router()
+
+const { PERMISSIONS } = require('../../../../constants')
+const { UserController } = require('../../../../http/controllers/admin/user/user.controller')
+const { checkPermissions } = require('../../../../http/middleware/permission.guard')
 
 // GET
 router.get('/get-all', checkPermissions([PERMISSIONS.ADMIN]), UserController.getAll)

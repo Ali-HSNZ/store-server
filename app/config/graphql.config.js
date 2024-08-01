@@ -1,4 +1,4 @@
-const { graphQLSchema } = require('../graphql/index.resolver')
+const { graphQLSchema } = require('../graphql/index.graphql')
 
 const graphqlConfig = (req, res) => {
     return {

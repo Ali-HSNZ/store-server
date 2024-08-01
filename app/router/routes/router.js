@@ -13,9 +13,13 @@ const { PermissionsRoutes } = require('./admin/permission.routes')
 const { RoleRoutes } = require('./admin/role.routes')
 const { checkPermissions } = require('../../http/middleware/permission.guard')
 const { PERMISSIONS } = require('../../constants')
+const { graphqlHTTP } = require('express-graphql')
+const { graphqlConfig } = require('../../config/graphql.config')
 
 // PUBLIC ROUTES
 router.use('/auth', AuthRoutes)
+
+router.use('/graphql', graphqlHTTP(graphqlConfig))
 
 // ADMIN ROUTES
 router.use(

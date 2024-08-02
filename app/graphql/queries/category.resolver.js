@@ -4,7 +4,6 @@ const { GraphQLList, GraphQLString } = require('graphql')
 
 const CategoriesResolver = {
     type: new GraphQLList(CategoryType),
-
     resolve: async () => {
         return await CategoryModel.find({ parent: undefined })
     },

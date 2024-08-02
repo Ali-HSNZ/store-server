@@ -2,6 +2,7 @@
     categories {
         title
         _id
+        children
     }
 }
 

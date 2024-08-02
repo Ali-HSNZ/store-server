@@ -1,7 +1,7 @@
 const { GraphQLString, GraphQLObjectType } = require('graphql')
 
-const AuthorType = new GraphQLObjectType({
-    name: 'authorType',
+const PublicAuthorType = new GraphQLObjectType({
+    name: 'public_authorType',
     fields: {
         id: { type: GraphQLString },
         first_name: { type: GraphQLString },
@@ -10,8 +10,8 @@ const AuthorType = new GraphQLObjectType({
     },
 })
 
-const CategoryType = new GraphQLObjectType({
-    name: 'categoryType',
+const PublicCategoryType = new GraphQLObjectType({
+    name: 'public_categoryType',
     fields: {
         _id: { type: GraphQLString },
         title: { type: GraphQLString },
@@ -20,6 +20,6 @@ const CategoryType = new GraphQLObjectType({
 })
 
 module.exports = {
-    AuthorType,
-    CategoryType,
+    PublicAuthorType,
+    PublicCategoryType,
 }

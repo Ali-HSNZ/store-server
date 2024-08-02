@@ -39,4 +39,22 @@ const verifyAccessToken = (req, res, next) => {
     }
 }
 
-module.exports = { verifyAccessToken }
+const verifyAccessTokenInGraphQL = async (req) => {
+    try {
+        const token = getToken(req.headers)
+
+        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+
+        // find user from DB with mobile
+        const user = await UserModel.findOne({ mobile: payload.mobile }, { otp: 0, __v: 0 })
+
+        //  if not Exist User throw error
+        if (!user) throw createHttpError.Unauthorized('مجددا وارد حساب کاربری خود شوید')
+
+        return user
+    } catch (error) {
+        if (error) throw createHttpError.Unauthorized(error?.message)
+    }
+}
+
+module.exports = { verifyAccessToken, verifyAccessTokenInGraphQL }

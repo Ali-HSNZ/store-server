@@ -13,6 +13,8 @@ const ProductResolver = {
         return await ProductModel.find(findQuery).populate([
             { path: 'category' },
             { path: 'supplier' },
+            { path: 'comments.user' },
+            { path: 'comments.answers.user' },
         ])
     },
 }

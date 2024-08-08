@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLInt } = require('graphql')
-const { PublicAuthorType, PublicCategoryType } = require('./public.type')
+const { PublicUserType, PublicCategoryType } = require('./public.type')
 
 const EpisodeType = new GraphQLObjectType({
     name: 'EpisodeType',
@@ -39,7 +39,7 @@ const CourseType = new GraphQLObjectType({
         format: { type: GraphQLString },
         category: { type: PublicCategoryType },
         status: { type: GraphQLString },
-        teacher: { type: PublicAuthorType },
+        teacher: { type: PublicUserType },
         chapters: { type: new GraphQLList(ChaptersType) },
     },
 })

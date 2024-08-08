@@ -4,6 +4,7 @@ const { PublicUserType } = require('./public.type')
 const CommentAnswerType = new GraphQLObjectType({
     name: 'CommentAnswerType',
     fields: {
+        _id: { type: GraphQLString },
         user: { type: PublicUserType },
         comment: { type: GraphQLString },
         show: { type: GraphQLBoolean },
@@ -14,6 +15,7 @@ const CommentAnswerType = new GraphQLObjectType({
 const CommentType = new GraphQLObjectType({
     name: 'CommentType',
     fields: {
+        _id: { type: GraphQLString },
         user: { type: PublicUserType },
         comment: { type: GraphQLString },
         answers: { type: new GraphQLList(CommentAnswerType) },

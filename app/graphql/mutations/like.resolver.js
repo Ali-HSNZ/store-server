@@ -49,7 +49,7 @@ const LikeProductResolver = {
         } else message = 'پسندیدن محصول لغو شد'
 
         return {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             data: {
                 message,
             },
@@ -95,7 +95,7 @@ const LikeCourseResolver = {
         } else message = 'پسندیدن دوره لغو شد'
 
         return {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             data: {
                 message,
             },
@@ -142,7 +142,7 @@ const LikeBlogResolver = {
         } else message = 'پسندیدن مقاله لغو شد'
 
         return {
-            statusCode: StatusCodes.CREATED,
+            statusCode: StatusCodes.OK,
             data: {
                 message,
             },

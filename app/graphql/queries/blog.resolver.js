@@ -13,10 +13,11 @@ const BlogResolver = {
         return await BlogModel.find(findQuery).populate([
             { path: 'author' },
             { path: 'category' },
-            { path: 'likes' },
-            { path: 'dislikes' },
             { path: 'comments.user' },
             { path: 'comments.answers.user' },
+            { path: 'likes' },
+            { path: 'dislikes' },
+            { path: 'bookmarks' },
         ])
     },
 }

@@ -11,7 +11,7 @@ const { BlogModel } = require('../../models/blogs')
 const { StatusCodes } = require('http-status-codes')
 const createHttpError = require('http-errors')
 
-const DisLikeProductResolver = {
+const BookmarkProductResolver = {
     type: PublicResponseType,
     args: {
         productId: { type: GraphQLString },
@@ -31,33 +31,29 @@ const DisLikeProductResolver = {
 
         if (!product) throw createHttpError.NotFound('محصول یافت نشد')
 
-        const likedProduct = await ProductModel.findOne({ _id: productId, likes: user._id })
-        const dislikedProduct = await ProductModel.findOne({ _id: productId, dislikes: user._id })
+        const bookmarkedProduct = await ProductModel.findOne({
+            _id: productId,
+            bookmarks: user._id,
+        })
 
-        const updateQuery = dislikedProduct
-            ? { $pull: { dislikes: user._id } }
-            : { $push: { dislikes: user._id } }
+        const updateQuery = bookmarkedProduct
+            ? { $pull: { bookmarks: user._id } }
+            : { $push: { bookmarks: user._id } }
 
         await ProductModel.updateOne({ _id: productId }, updateQuery)
-
-        let message = ''
-
-        if (!dislikedProduct) {
-            if (likedProduct)
-                await ProductModel.updateOne({ _id: productId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن محصول با موفقیت انجام شد'
-        } else message = 'نپسندیدن محصول لغو شد'
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: bookmarkedProduct
+                    ? 'محصول از لیست مورد علاقه‌ها حذف شد'
+                    : 'محصول به لیست مورد علاقه‌ها اضافه شد',
             },
         }
     },
 }
 
-const DisLikeCourseResolver = {
+const BookmarkCourseResolver = {
     type: PublicResponseType,
     args: {
         courseId: { type: GraphQLString },
@@ -77,33 +73,26 @@ const DisLikeCourseResolver = {
 
         if (!course) throw createHttpError.NotFound('دوره یافت نشد')
 
-        const likedCourse = await CourseModel.findOne({ _id: courseId, likes: user._id })
-        const dislikedCourse = await CourseModel.findOne({ _id: courseId, dislikes: user._id })
+        const bookmarkedCourse = await CourseModel.findOne({ _id: courseId, bookmarks: user._id })
 
-        const updateQuery = dislikedCourse
-            ? { $pull: { dislikes: user._id } }
-            : { $push: { dislikes: user._id } }
+        const updateQuery = bookmarkedCourse
+            ? { $pull: { bookmarks: user._id } }
+            : { $push: { bookmarks: user._id } }
 
         await CourseModel.updateOne({ _id: courseId }, updateQuery)
-
-        let message = ''
-
-        if (!dislikedCourse) {
-            if (likedCourse)
-                await CourseModel.updateOne({ _id: courseId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن دوره با موفقیت انجام شد'
-        } else message = 'نپسندیدن دوره لغو شد'
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: bookmarkedCourse
+                    ? 'دوره از لیست مورد علاقه‌ها حذف شد'
+                    : 'دوره به لیست مورد علاقه‌ها اضافه شد',
             },
         }
     },
 }
 
-const DisLikeBlogResolver = {
+const BookmarkBlogResolver = {
     type: PublicResponseType,
     args: {
         blogId: { type: GraphQLString },
@@ -123,30 +112,23 @@ const DisLikeBlogResolver = {
 
         if (!blog) throw createHttpError.NotFound('مقاله یافت نشد')
 
-        const likedBlog = await BlogModel.findOne({ _id: blogId, likes: user._id })
-        const dislikedBlog = await BlogModel.findOne({ _id: blogId, dislikes: user._id })
+        const bookmarkedBlog = await BlogModel.findOne({ _id: blogId, bookmarks: user._id })
 
-        const updateQuery = dislikedBlog
-            ? { $pull: { dislikes: user._id } }
-            : { $push: { dislikes: user._id } }
+        const updateQuery = bookmarkedBlog
+            ? { $pull: { bookmarks: user._id } }
+            : { $push: { bookmarks: user._id } }
 
         await BlogModel.updateOne({ _id: blogId }, updateQuery)
-
-        let message = ''
-
-        if (!dislikedBlog) {
-            if (likedBlog)
-                await BlogModel.updateOne({ _id: blogId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن مقاله با موفقیت انجام شد'
-        } else message = 'نپسندیدن مقاله لغو شد'
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: bookmarkedBlog
+                    ? 'مقاله از لیست مورد علاقه‌ها حذف شد'
+                    : 'مقاله به لیست مورد علاقه‌ها اضافه شد',
             },
         }
     },
 }
 
-module.exports = { DisLikeProductResolver, DisLikeCourseResolver, DisLikeBlogResolver }
+module.exports = { BookmarkProductResolver, BookmarkCourseResolver, BookmarkBlogResolver }

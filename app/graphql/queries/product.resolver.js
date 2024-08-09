@@ -14,9 +14,10 @@ const ProductResolver = {
             { path: 'category' },
             { path: 'supplier' },
             { path: 'comments.user' },
+            { path: 'comments.answers.user' },
             { path: 'likes' },
             { path: 'dislikes' },
-            { path: 'comments.answers.user' },
+            { path: 'bookmarks' },
         ])
     },
 }

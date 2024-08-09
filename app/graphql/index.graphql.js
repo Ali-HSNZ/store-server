@@ -9,6 +9,7 @@ const {
     UserBookmarkedBlogsResolver,
     UserBookmarkedCoursesResolver,
     UserBookmarkedProductsResolver,
+    UserBasketResolver,
 } = require('./queries/user-profile.resolver')
 
 // Mutations
@@ -53,6 +54,7 @@ const RootQuery = new GraphQLObjectType({
         userBookmarkedBlogs: UserBookmarkedBlogsResolver,
         userBookmarkedCourses: UserBookmarkedCoursesResolver,
         userBookmarkedProducts: UserBookmarkedProductsResolver,
+        userBasket: UserBasketResolver,
     },
 })
 const RootMutation = new GraphQLObjectType({

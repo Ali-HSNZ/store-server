@@ -76,14 +76,7 @@ const AddCourseToBasketResolver = {
         const course = await findCourseInBasket(user._id, courseId)
 
         if (course) {
-            await UserModel.updateOne(
-                { _id: user._id, 'basket.courses.courseId': courseId },
-                {
-                    $inc: {
-                        'basket.courses.$.count': 1,
-                    },
-                }
-            )
+            throw createHttpError.BadRequest('این دوره قبلا به سبد خرید اضافه شده')
         } else {
             await UserModel.updateOne(
                 { _id: user._id },

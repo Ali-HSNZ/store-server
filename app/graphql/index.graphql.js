@@ -35,6 +35,12 @@ const {
     BookmarkBlogResolver,
     BookmarkCourseResolver,
 } = require('./mutations/bookmark.resolver')
+const {
+    AddProductToBasketResolver,
+    RemoveProductFromBasketResolver,
+    RemoveCourseFromBasketResolver,
+    AddCourseToBasketResolver,
+} = require('./mutations/basket.resolver')
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -71,6 +77,13 @@ const RootMutation = new GraphQLObjectType({
         BookmarkBlogResolver, // blog
         BookmarkCourseResolver, // course
         BookmarkProductResolver, // product
+
+        // basket
+        AddProductToBasketResolver, // add product
+        RemoveProductFromBasketResolver, // remove product
+
+        AddCourseToBasketResolver, // add course
+        RemoveCourseFromBasketResolver, // remove course
     },
 })
 

@@ -1,5 +1,3 @@
-const { default: mongoose } = require('mongoose')
-
 const { GraphQLString } = require('graphql')
 
 const { BlogModel } = require('../../models/blogs')
@@ -10,6 +8,12 @@ const createHttpError = require('http-errors')
 const { verifyAccessTokenInGraphQL } = require('../../http/middleware/verifyAccessToken')
 const { StatusCodes } = require('http-status-codes')
 const { PublicResponseType } = require('../typeDefs/public.type')
+const {
+    checkValidObjectId,
+    checkExistBlog,
+    checkExistProduct,
+    checkExistCourse,
+} = require('../utils/functions.utils')
 
 const CreateCommentForBlogResolver = {
     type: PublicResponseType,
@@ -24,8 +28,6 @@ const CreateCommentForBlogResolver = {
         const user = await verifyAccessTokenInGraphQL(req)
 
         const { blogId, parent, comment } = args
-
-        checkValidObjectId(blogId, 'شناسه بلاگ نامعتبر است')
 
         await checkExistBlog(blogId)
 
@@ -102,8 +104,6 @@ const CreateCommentForProductResolver = {
         const user = await verifyAccessTokenInGraphQL(req)
 
         const { productId, parent, comment } = args
-
-        checkValidObjectId(productId, 'شناسه محصول نامعتبر است')
 
         await checkExistProduct(productId)
 
@@ -183,8 +183,6 @@ const CreateCommentForCourseResolver = {
 
         const { courseId, parent, comment } = args
 
-        checkValidObjectId(courseId, 'شناسه دوره نامعتبر است')
-
         await checkExistCourse(courseId)
 
         if (parent && parent.trim().length > 0) {
@@ -250,21 +248,6 @@ const CreateCommentForCourseResolver = {
     },
 }
 
-const checkExistBlog = async (id) => {
-    const blog = await BlogModel.findById(id)
-    if (!blog) throw createHttpError.NotFound('بلاگی با این شناسه یافت نشد')
-}
-
-const checkExistProduct = async (id) => {
-    const blog = await ProductModel.findById(id)
-    if (!blog) throw createHttpError.NotFound('محصولی با این شناسه یافت نشد')
-}
-
-const checkExistCourse = async (id) => {
-    const blog = await CourseModel.findById(id)
-    if (!blog) throw createHttpError.NotFound('دوره ایی با این شناسه یافت نشد')
-}
-
 const getComment = async (model, id) => {
     if (id) {
         const findComment = await model.findOne({ 'comments._id': id }, { 'comments.$': 1 })
@@ -273,11 +256,6 @@ const getComment = async (model, id) => {
         return findComment.comments?.[0]
     }
     return null
-}
-
-const checkValidObjectId = (id, errorMessage) => {
-    if (!mongoose.isValidObjectId(id))
-        throw createHttpError.BadRequest(errorMessage || 'شناسه نامعتبر است')
 }
 
 module.exports = {

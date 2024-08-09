@@ -1,5 +1,3 @@
-const { default: mongoose } = require('mongoose')
-
 const { GraphQLString } = require('graphql')
 const { PublicResponseType } = require('../typeDefs/public.type')
 const { verifyAccessTokenInGraphQL } = require('../../http/middleware/verifyAccessToken')
@@ -9,7 +7,7 @@ const { CourseModel } = require('../../models/course')
 const { BlogModel } = require('../../models/blogs')
 
 const { StatusCodes } = require('http-status-codes')
-const createHttpError = require('http-errors')
+const { checkExistProduct, checkExistCourse, checkExistBlog } = require('../utils/functions.utils')
 
 const DisLikeProductResolver = {
     type: PublicResponseType,
@@ -22,14 +20,7 @@ const DisLikeProductResolver = {
         const user = await verifyAccessTokenInGraphQL(req)
 
         const { productId } = args
-
-        if (!mongoose.isValidObjectId(productId))
-            throw createHttpError.BadRequest('شناسه محصول معتبر نیست')
-
-        // find product
-        const product = await ProductModel.findById(productId)
-
-        if (!product) throw createHttpError.NotFound('محصول یافت نشد')
+        await checkExistProduct(productId)
 
         const likedProduct = await ProductModel.findOne({ _id: productId, likes: user._id })
         const dislikedProduct = await ProductModel.findOne({ _id: productId, dislikes: user._id })
@@ -40,18 +31,18 @@ const DisLikeProductResolver = {
 
         await ProductModel.updateOne({ _id: productId }, updateQuery)
 
-        let message = ''
+        if (!dislikedProduct && likedProduct) {
+            await ProductModel.updateOne({ _id: productId }, { $pull: { likes: user._id } })
+        }
 
-        if (!dislikedProduct) {
-            if (likedProduct)
-                await ProductModel.updateOne({ _id: productId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن محصول با موفقیت انجام شد'
-        } else message = 'نپسندیدن محصول لغو شد'
+        const responseMessage = dislikedProduct
+            ? 'نپسندیدن محصول لغو شد'
+            : 'نپسندیدن محصول با موفقیت انجام شد'
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: responseMessage,
             },
         }
     },
@@ -68,14 +59,7 @@ const DisLikeCourseResolver = {
         const user = await verifyAccessTokenInGraphQL(req)
 
         const { courseId } = args
-
-        if (!mongoose.isValidObjectId(courseId))
-            throw createHttpError.BadRequest('شناسه دوره معتبر نیست')
-
-        // find course
-        const course = await CourseModel.findById(courseId)
-
-        if (!course) throw createHttpError.NotFound('دوره یافت نشد')
+        await checkExistCourse(courseId)
 
         const likedCourse = await CourseModel.findOne({ _id: courseId, likes: user._id })
         const dislikedCourse = await CourseModel.findOne({ _id: courseId, dislikes: user._id })
@@ -86,18 +70,18 @@ const DisLikeCourseResolver = {
 
         await CourseModel.updateOne({ _id: courseId }, updateQuery)
 
-        let message = ''
+        if (!dislikedCourse && likedCourse) {
+            await CourseModel.updateOne({ _id: courseId }, { $pull: { likes: user._id } })
+        }
 
-        if (!dislikedCourse) {
-            if (likedCourse)
-                await CourseModel.updateOne({ _id: courseId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن دوره با موفقیت انجام شد'
-        } else message = 'نپسندیدن دوره لغو شد'
+        const responseMessage = dislikedCourse
+            ? 'نپسندیدن دوره لغو شد'
+            : 'نپسندیدن دوره با موفقیت انجام شد'
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: responseMessage,
             },
         }
     },
@@ -115,13 +99,7 @@ const DisLikeBlogResolver = {
 
         const { blogId } = args
 
-        if (!mongoose.isValidObjectId(blogId))
-            throw createHttpError.BadRequest('شناسه مقاله معتبر نیست')
-
-        // find blog
-        const blog = await BlogModel.findById(blogId)
-
-        if (!blog) throw createHttpError.NotFound('مقاله یافت نشد')
+        await checkExistBlog(blogId)
 
         const likedBlog = await BlogModel.findOne({ _id: blogId, likes: user._id })
         const dislikedBlog = await BlogModel.findOne({ _id: blogId, dislikes: user._id })
@@ -132,18 +110,18 @@ const DisLikeBlogResolver = {
 
         await BlogModel.updateOne({ _id: blogId }, updateQuery)
 
-        let message = ''
+        const responseMessage = dislikedBlog
+            ? 'نپسندیدن مقاله لغو شد'
+            : 'نپسندیدن مقاله با موفقیت انجام شد'
 
-        if (!dislikedBlog) {
-            if (likedBlog)
-                await BlogModel.updateOne({ _id: blogId }, { $pull: { likes: user._id } })
-            message = 'نپسندیدن مقاله با موفقیت انجام شد'
-        } else message = 'نپسندیدن مقاله لغو شد'
+        if (!dislikedBlog && likedBlog) {
+            await BlogModel.updateOne({ _id: blogId }, { $pull: { likes: user._id } })
+        }
 
         return {
             statusCode: StatusCodes.OK,
             data: {
-                message,
+                message: responseMessage,
             },
         }
     },

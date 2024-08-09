@@ -1,4 +1,9 @@
 const { Kind } = require('graphql')
+const { default: mongoose } = require('mongoose')
+const { CourseModel } = require('../../models/course')
+const createHttpError = require('http-errors')
+const { ProductModel } = require('../../models/products')
+const { BlogModel } = require('../../models/blogs')
 
 const parseObject = (valueNode) => {
     const value = Object.create(null)
@@ -48,4 +53,38 @@ const toObject = (value) => {
     }
     return null
 }
-module.exports = { parseLiteral, toObject }
+
+const checkValidObjectId = (id, errorMessage) => {
+    if (!mongoose.isValidObjectId(id))
+        throw createHttpError.BadRequest(errorMessage || 'شناسه نامعتبر است')
+}
+
+const checkExistBlog = async (id) => {
+    checkValidObjectId(id, 'شناسه بلاگ نامعتبر است')
+
+    const blog = await BlogModel.findById(id)
+    if (!blog) throw createHttpError.NotFound('بلاگی با این شناسه یافت نشد')
+}
+
+const checkExistProduct = async (id) => {
+    checkValidObjectId(id, 'شناسه محصول نامعتبر است')
+
+    const product = await ProductModel.findById(id)
+    if (!product) throw createHttpError.NotFound('محصولی با این شناسه یافت نشد')
+}
+
+const checkExistCourse = async (id) => {
+    checkValidObjectId(id, 'شناسه دوره نامعتبر است')
+
+    const course = await CourseModel.findById(id)
+    if (!course) throw createHttpError.NotFound('دوره‌ایی با این شناسه یافت نشد')
+}
+
+module.exports = {
+    parseLiteral,
+    toObject,
+    checkExistBlog,
+    checkExistProduct,
+    checkExistCourse,
+    checkValidObjectId,
+}

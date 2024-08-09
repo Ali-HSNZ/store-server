@@ -1,0 +1,23 @@
+# bookmark blog
+mutation {
+    BookmarkBlogResolver(blogId: "66867fa33404e5c80fabd873") {
+        statusCode
+        data
+    }
+}
+
+# bookmark course
+mutation {
+    BookmarkCourseResolver(courseId: "669ec3b1ca58929e5895ef8e") {
+        statusCode
+        data
+    }
+}
+
+# bookmark product
+mutation {
+    BookmarkProductResolver(productId: "669522fb56f08f16dcdd9d4b") {
+        statusCode
+        data
+    }
+}

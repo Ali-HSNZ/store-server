@@ -21,5 +21,21 @@
             colors
             length
         }
+        comments {
+            _id
+            user {
+                mobile
+            }
+            comment
+            answers {
+                _id
+                user {
+                    mobile
+                }
+                comment
+                show
+                createdAt
+            }
+        }
     }
 }

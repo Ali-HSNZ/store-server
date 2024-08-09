@@ -1,0 +1,35 @@
+# create comment for product
+mutation {
+    CreateCommentForProductResolver(
+        comment: "new answer for comment for test product comment"
+        parent: "66b51ff056cf61f58823ee1d"
+        productId: "669522fb56f08f16dcdd9d4b"
+    ) {
+        statusCode
+        data
+    }
+}
+
+# create comment for course
+mutation {
+    CreateCommentForCourseResolver(
+        comment: "answer to"
+        parent: "66b517d0e222c5f53b6d0708"
+        courseId: "669ec3b1ca58929e5895ef8e"
+    ) {
+        statusCode
+        data
+    }
+}
+
+# create comment for blog
+mutation {
+    CreateCommentForBlogResolver(
+        comment: "answer to"
+        parent: "66b517d0e222c5f53b6d0708"
+        blogId: "669ec3b1ca58929e5895ef8e"
+    ) {
+        statusCode
+        data
+    }
+}

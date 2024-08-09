@@ -1,9 +1,10 @@
+const { default: mongoose } = require('mongoose')
+
 const path = require('path')
 const { addBlogSchema } = require('../../../validators/admin/blog.validation')
 const { Controller } = require('../../controller')
 const { BlogModel } = require('../../../../models/blogs')
 const { deleteFileFromPublic, deleteInvalidPropertyInObject } = require('../../../../utils')
-const { default: mongoose } = require('mongoose')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
 
@@ -28,8 +29,8 @@ class BlogController extends Controller {
             })
 
             res.status(StatusCodes.CREATED).json({
+                statusCode: StatusCodes.CREATED,
                 data: {
-                    statusCode: StatusCodes.CREATED,
                     message: 'مقاله با موفقیت ایجاد شد',
                 },
             })
@@ -48,23 +49,14 @@ class BlogController extends Controller {
             const blog = await this.findBlog({ _id: id })
 
             res.status(StatusCodes.OK).json({
+                statusCode: StatusCodes.OK,
                 data: {
                     blog,
                 },
-                statusCode: StatusCodes.OK,
             })
         } catch (error) {
             next(error)
         }
-    }
-
-    async findBlog(query = {}) {
-        const blog = await BlogModel.findOne(query).populate([
-            { path: 'category' },
-            { path: 'author', select: ['mobile', 'first_name', 'last_name', 'username'] },
-        ])
-        if (!blog) throw createHttpError.NotFound('مقاله یافت نشد')
-        return blog
     }
 
     async getAll(req, res, next) {
@@ -106,19 +98,18 @@ class BlogController extends Controller {
                     },
                 },
             ])
+
             res.status(StatusCodes.OK).json({
-                data: { blogs, statusCode: StatusCodes.OK },
+                statusCode: StatusCodes.OK,
+                data: {
+                    blogs,
+                },
             })
         } catch (error) {
             next(error)
         }
     }
-    async getComments(req, res, next) {
-        try {
-        } catch (error) {
-            next(error)
-        }
-    }
+
     async edit(req, res, next) {
         try {
             const { id } = req.params
@@ -148,12 +139,12 @@ class BlogController extends Controller {
             )
 
             if (updateResult.modifiedCount === 0)
-                throw createHttpError.InternalServerError('به روزرسانی انجام نشد')
+                throw createHttpError.InternalServerError('به‌روزرسانی انجام نشد')
 
             res.status(StatusCodes.CREATED).json({
+                statusCode: StatusCodes.CREATED,
                 data: {
-                    statusCode: StatusCodes.CREATED,
-                    message: 'به روزرسانی مقاله موفقیت انجام شد',
+                    message: 'به‌روزرسانی مقاله موفقیت انجام شد',
                 },
             })
         } catch (error) {
@@ -161,6 +152,7 @@ class BlogController extends Controller {
             next(error)
         }
     }
+
     async deleteById(req, res, next) {
         try {
             const { id } = req.params
@@ -177,11 +169,22 @@ class BlogController extends Controller {
 
             res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
-                message: 'مقاله با موفقیت حذف شد',
+                data: {
+                    message: 'مقاله با موفقیت حذف شد',
+                },
             })
         } catch (error) {
             next(error)
         }
+    }
+    async findBlog(query = {}) {
+        const blog = await BlogModel.findOne(query).populate([
+            { path: 'category' },
+            { path: 'likes', select: ['mobile', 'first_name', 'last_name'] },
+            { path: 'author', select: ['mobile', 'first_name', 'last_name', 'username'] },
+        ])
+        if (!blog) throw createHttpError.NotFound('مقاله یافت نشد')
+        return blog
     }
 }
 

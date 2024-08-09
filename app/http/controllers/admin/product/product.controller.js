@@ -119,9 +119,11 @@ class ProductController extends Controller {
 
             let products = []
             if (search?.trim()?.length > 0) {
-                products = await ProductModel.find({ $text: { $search: new RegExp(search, 'ig') } })
+                products = await ProductModel.find({
+                    $text: { $search: new RegExp(search, 'ig') },
+                }).populate([{ path: 'likes' }])
             } else {
-                products = await ProductModel.find({})
+                products = await ProductModel.find({}).populate([{ path: 'likes' }])
             }
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,

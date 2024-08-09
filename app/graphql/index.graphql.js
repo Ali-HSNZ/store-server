@@ -1,15 +1,27 @@
 const { GraphQLObjectType, GraphQLSchema } = require('graphql')
 
+// Queries
 const { BlogResolver } = require('./queries/blog.resolver')
 const { ProductResolver } = require('./queries/product.resolver')
 const { CategoriesResolver, CategoryChildResolver } = require('./queries/category.resolver')
 const { CourseResolver } = require('./queries/course.resolver')
+
+// Mutations
 const {
     CreateCommentForBlogResolver,
     CreateCommentForCourseResolver,
     CreateCommentForProductResolver,
 } = require('./mutations/comment.resolver')
-const { LikeProduct } = require('./mutations/like.resolver')
+const {
+    LikeProductResolver,
+    LikeCourseResolver,
+    LikeBlogResolver,
+} = require('./mutations/like.resolver')
+const {
+    DisLikeProductResolver,
+    DisLikeCourseResolver,
+    DisLikeBlogResolver,
+} = require('./mutations/dislike.resolver')
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -24,10 +36,20 @@ const RootQuery = new GraphQLObjectType({
 const RootMutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        CreateCommentForBlogResolver,
-        CreateCommentForCourseResolver,
-        CreateCommentForProductResolver,
-        LikeProduct,
+        // create comment
+        CreateCommentForBlogResolver, // blog
+        CreateCommentForCourseResolver, // course
+        CreateCommentForProductResolver, // product
+
+        // like
+        LikeBlogResolver, // blog
+        LikeCourseResolver, // course
+        LikeProductResolver, // product
+
+        // dislike
+        DisLikeBlogResolver, // blog
+        DisLikeCourseResolver, // course
+        DisLikeProductResolver, // product
     },
 })
 

@@ -8,6 +8,17 @@ const { deleteFileFromPublic, deleteInvalidPropertyInObject } = require('../../.
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
 
+const selectUserData = ['mobile', 'first_name', 'last_name']
+
+const populateQueryData = [
+    { path: 'category' },
+    { path: 'author', select: selectUserData },
+    { path: 'likes', select: selectUserData },
+    { path: 'dislikes', select: selectUserData },
+    { path: 'comments.user', select: selectUserData },
+    { path: 'comments.answers.user', select: selectUserData },
+]
+
 class BlogController extends Controller {
     async create(req, res, next) {
         try {
@@ -74,9 +85,6 @@ class BlogController extends Controller {
                     },
                 },
                 {
-                    $unwind: '$author',
-                },
-                {
                     $lookup: {
                         from: 'categories',
                         localField: 'category',
@@ -85,7 +93,26 @@ class BlogController extends Controller {
                     },
                 },
                 {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'likes',
+                        foreignField: '_id',
+                        as: 'likes',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'dislikes',
+                        foreignField: '_id',
+                        as: 'dislikes',
+                    },
+                },
+                {
                     $unwind: '$category',
+                },
+                {
+                    $unwind: '$author',
                 },
                 {
                     $project: {
@@ -93,8 +120,19 @@ class BlogController extends Controller {
                         'author.bills': 0,
                         'author.discount': 0,
                         'author.__v': 0,
-                        'category.__v': 0,
                         'author.roles': 0,
+
+                        'category.__v': 0,
+
+                        'likes.otp': 0,
+                        'likes.bills': 0,
+                        'likes.discount': 0,
+                        'likes.__v': 0,
+
+                        'dislikes.otp': 0,
+                        'dislikes.bills': 0,
+                        'dislikes.discount': 0,
+                        'dislikes.__v': 0,
                     },
                 },
             ])
@@ -178,11 +216,7 @@ class BlogController extends Controller {
         }
     }
     async findBlog(query = {}) {
-        const blog = await BlogModel.findOne(query).populate([
-            { path: 'category' },
-            { path: 'likes', select: ['mobile', 'first_name', 'last_name'] },
-            { path: 'author', select: ['mobile', 'first_name', 'last_name', 'username'] },
-        ])
+        const blog = await BlogModel.findOne(query).populate(populateQueryData)
         if (!blog) throw createHttpError.NotFound('مقاله یافت نشد')
         return blog
     }

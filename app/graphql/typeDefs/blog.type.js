@@ -15,6 +15,7 @@ const BlogType = new GraphQLObjectType({
         category: { type: new GraphQLList(PublicCategoryType) },
         comments: { type: new GraphQLList(CommentType) },
         likes: { type: new GraphQLList(PublicUserType) },
+        dislikes: { type: new GraphQLList(PublicUserType) },
     },
 })
 

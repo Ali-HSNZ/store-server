@@ -14,6 +14,7 @@ const CourseResolver = {
             { path: 'teacher' },
             { path: 'category' },
             { path: 'likes' },
+            { path: 'dislikes' },
             { path: 'comments.user' },
             { path: 'comments.answers.user' },
         ])

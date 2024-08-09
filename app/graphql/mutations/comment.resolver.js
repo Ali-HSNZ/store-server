@@ -1,3 +1,5 @@
+const { default: mongoose } = require('mongoose')
+
 const { GraphQLString } = require('graphql')
 
 const { BlogModel } = require('../../models/blogs')
@@ -5,11 +7,9 @@ const { CourseModel } = require('../../models/course')
 const { ProductModel } = require('../../models/products')
 
 const createHttpError = require('http-errors')
-const { default: mongoose } = require('mongoose')
 const { verifyAccessTokenInGraphQL } = require('../../http/middleware/verifyAccessToken')
 const { StatusCodes } = require('http-status-codes')
 const { PublicResponseType } = require('../typeDefs/public.type')
-const { copyObject } = require('../../utils')
 
 const CreateCommentForBlogResolver = {
     type: PublicResponseType,

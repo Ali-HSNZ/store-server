@@ -13,6 +13,17 @@ const { objectIdValidator } = require('../../../validators/public.validator')
 const { deleteFileWithPathHandler } = require('../../../../utils/delete-file-from-public')
 const { default: mongoose } = require('mongoose')
 
+const selectUserData = ['mobile', 'first_name', 'last_name']
+
+const populateQueryData = [
+    { path: 'category' },
+    { path: 'likes', select: selectUserData },
+    { path: 'dislikes', select: selectUserData },
+    { path: 'teacher', select: selectUserData },
+    { path: 'comments.user', select: selectUserData },
+    { path: 'comments.answers.user', select: selectUserData },
+]
+
 class CourseController extends Controller {
     async getAll(req, res, next) {
         try {
@@ -22,27 +33,9 @@ class CourseController extends Controller {
             if (search?.trim()?.length > 0) {
                 courses = await CourseModel.find({
                     $text: { $search: new RegExp(search, 'ig') },
-                })
-                    // populate teacher and category details
-                    .populate([
-                        { path: 'category', select: { title: 1 } },
-                        {
-                            path: 'teacher',
-                            select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
-                        },
-                    ])
+                }).populate(populateQueryData)
             } else {
-                courses = await CourseModel.find({})
-                    .sort({ _id: -1 })
-                    // populate teacher and category details
-
-                    .populate([
-                        { path: 'category', select: { title: 1 } },
-                        {
-                            path: 'teacher',
-                            select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
-                        },
-                    ])
+                courses = await CourseModel.find({}).sort({ _id: -1 }).populate(populateQueryData)
             }
             res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
@@ -57,13 +50,7 @@ class CourseController extends Controller {
         try {
             const courseId = req.params.id
             const { id } = await objectIdValidator.validateAsync({ id: courseId })
-            const course = await CourseModel.findById(id).populate([
-                { path: 'category', select: { title: 1 } },
-                {
-                    path: 'teacher',
-                    select: { first_name: 1, last_name: 1, mobile: 1, email: 1 },
-                },
-            ])
+            const course = await CourseModel.findById(id).populate(populateQueryData)
 
             if (!course) throw createHttpError.NotFound('دوره یافت نشد')
             return res.status(StatusCodes.OK).json({

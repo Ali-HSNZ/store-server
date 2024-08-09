@@ -15,6 +15,7 @@ const ProductResolver = {
             { path: 'supplier' },
             { path: 'comments.user' },
             { path: 'likes' },
+            { path: 'dislikes' },
             { path: 'comments.answers.user' },
         ])
     },

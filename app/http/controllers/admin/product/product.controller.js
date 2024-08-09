@@ -12,6 +12,17 @@ const { objectIdValidator } = require('../../../validators/public.validator')
 const createHttpError = require('http-errors')
 const { StatusCodes } = require('http-status-codes')
 
+const selectUserData = ['mobile', 'first_name', 'last_name']
+
+const populateQueryData = [
+    { path: 'category' },
+    { path: 'likes', select: selectUserData },
+    { path: 'dislikes', select: selectUserData },
+    { path: 'supplier', select: selectUserData },
+    { path: 'comments.user', select: selectUserData },
+    { path: 'comments.answers.user', select: selectUserData },
+]
+
 class ProductController extends Controller {
     async add(req, res, next) {
         try {
@@ -121,9 +132,9 @@ class ProductController extends Controller {
             if (search?.trim()?.length > 0) {
                 products = await ProductModel.find({
                     $text: { $search: new RegExp(search, 'ig') },
-                }).populate([{ path: 'likes' }])
+                }).populate(populateQueryData)
             } else {
-                products = await ProductModel.find({}).populate([{ path: 'likes' }])
+                products = await ProductModel.find({}).populate(populateQueryData)
             }
             return res.status(StatusCodes.OK).json({
                 statusCode: StatusCodes.OK,
@@ -147,7 +158,8 @@ class ProductController extends Controller {
     }
     async findProductById(productId) {
         const { id } = await objectIdValidator.validateAsync({ id: productId })
-        const product = await ProductModel.findById(id)
+
+        const product = await ProductModel.findById(id).populate(populateQueryData)
         if (!id) throw createHttpError.NotFound('محصول یافت نشد')
         return product
     }

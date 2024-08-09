@@ -10,7 +10,7 @@ const PublicAnyType = new GraphQLScalarType({
 })
 
 const PublicUserType = new GraphQLObjectType({
-    name: 'public_authorType',
+    name: 'public_userType',
     fields: {
         _id: { type: GraphQLString },
         first_name: { type: GraphQLString },

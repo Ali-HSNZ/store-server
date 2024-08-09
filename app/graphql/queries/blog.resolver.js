@@ -14,6 +14,7 @@ const BlogResolver = {
             { path: 'author' },
             { path: 'category' },
             { path: 'likes' },
+            { path: 'dislikes' },
             { path: 'comments.user' },
             { path: 'comments.answers.user' },
         ])

@@ -33,6 +33,7 @@ const ProductType = new GraphQLObjectType({
         category: { type: PublicCategoryType },
         feature: { type: ProductFeaturesType },
         likes: { type: new GraphQLList(PublicUserType) },
+        dislikes: { type: new GraphQLList(PublicUserType) },
         comments: { type: new GraphQLList(CommentType) },
     },
 })

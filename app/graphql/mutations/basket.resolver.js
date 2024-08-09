@@ -119,6 +119,42 @@ const RemoveProductFromBasketResolver = {
 
         const { productId } = args
         await checkExistProduct(productId)
+
+        const product = await findProductInBasket(user._id, productId)
+
+        if (!product) throw createHttpError.NotFound('محصول موردنظر در سبد خرید یافت نشد')
+
+        if (product.count > 1) {
+            await UserModel.updateOne(
+                { _id: user._id, 'basket.products.productId': productId },
+                {
+                    $inc: {
+                        'basket.products.$.count': -1,
+                    },
+                }
+            )
+        } else {
+            await UserModel.updateOne(
+                { _id: user._id, 'basket.products.productId': productId },
+                {
+                    $pull: {
+                        'basket.products': {
+                            productId,
+                        },
+                    },
+                }
+            )
+        }
+
+        const responseMessage =
+            product.count > 1 ? 'تعداد محصول کاهش یافت' : 'محصول از سبد خرید حذف شد'
+
+        return {
+            statusCode: StatusCodes.OK,
+            data: {
+                message: responseMessage,
+            },
+        }
     },
 }
 
@@ -134,6 +170,42 @@ const RemoveCourseFromBasketResolver = {
 
         const { courseId } = args
         await checkExistCourse(courseId)
+
+        const course = await findCourseInBasket(user._id, courseId)
+
+        if (!course) throw createHttpError.NotFound('دوره موردنظر در سبد خرید یافت نشد')
+
+        if (course.count > 1) {
+            await UserModel.updateOne(
+                { _id: user._id, 'basket.courses.courseId': courseId },
+                {
+                    $inc: {
+                        'basket.courses.$.count': -1,
+                    },
+                }
+            )
+        } else {
+            await UserModel.updateOne(
+                { _id: user._id, 'basket.courses.courseId': courseId },
+                {
+                    $pull: {
+                        'basket.courses': {
+                            courseId,
+                        },
+                    },
+                }
+            )
+        }
+
+        const responseMessage =
+            course.count > 1 ? 'تعداد دوره کاهش یافت' : 'دوره از سبد خرید حذف شد'
+
+        return {
+            statusCode: StatusCodes.OK,
+            data: {
+                message: responseMessage,
+            },
+        }
     },
 }
 

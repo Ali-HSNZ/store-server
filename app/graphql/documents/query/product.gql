@@ -16,6 +16,11 @@
             first_name
             last_name
         }
+        bookmarks {
+            mobile
+            first_name
+            last_name
+        }
         supplier {
             first_name
             last_name

@@ -18,6 +18,11 @@
             first_name
             last_name
         }
+        bookmarks {
+            mobile
+            first_name
+            last_name
+        }
         category {
             title
         }

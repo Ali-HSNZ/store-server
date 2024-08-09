@@ -1,0 +1,151 @@
+# get user bookmarked courses (from profile)
+{
+    userBookmarkedCourses {
+        _id
+        title
+        text
+        imageUrl
+        short_text
+        price
+        discount
+        teacher {
+            first_name
+            last_name
+            mobile
+        }
+        chapters {
+            title
+            episodes {
+                title
+                videoUrl
+            }
+        }
+        likes {
+            mobile
+            first_name
+            last_name
+        }
+        dislikes {
+            mobile
+            first_name
+            last_name
+        }
+        bookmarks {
+            mobile
+            first_name
+            last_name
+        }
+        comments {
+            _id
+            user {
+                mobile
+            }
+            comment
+            answers {
+                _id
+                user {
+                    mobile
+                }
+                comment
+                show
+                createdAt
+            }
+        }
+    }
+}
+
+# get user bookmarked products (from profile)
+{
+    userBookmarkedBlogs {
+        _id
+        title
+        imageUrl
+        text
+        author {
+            first_name
+            last_name
+        }
+        likes {
+            mobile
+            first_name
+            last_name
+        }
+        dislikes {
+            mobile
+            first_name
+            last_name
+        }
+        bookmarks {
+            mobile
+            first_name
+            last_name
+        }
+        category {
+            title
+        }
+        comments {
+            _id
+            user {
+                mobile
+            }
+            comment
+            answers {
+                _id
+                user {
+                    mobile
+                }
+                comment
+                show
+                createdAt
+            }
+        }
+    }
+}
+
+# get user bookmarked blogs (from profile)
+{
+    userBookmarkedBlogs {
+        _id
+        title
+        imageUrl
+        text
+        author {
+            first_name
+            last_name
+        }
+        likes {
+            mobile
+            first_name
+            last_name
+        }
+        dislikes {
+            mobile
+            first_name
+            last_name
+        }
+        bookmarks {
+            mobile
+            first_name
+            last_name
+        }
+        category {
+            title
+        }
+        comments {
+            _id
+            user {
+                mobile
+            }
+            comment
+            answers {
+                _id
+                user {
+                    mobile
+                }
+                comment
+                show
+                createdAt
+            }
+        }
+    }
+}

@@ -11,8 +11,10 @@ const setProductFeatures = require('./set-product-features')
 const deleteInvalidPropertyInObject = require('./delete-invalid-property-in-object')
 const getVideoTime = require('./get-video-time')
 const getTimeOfCourse = require('./get-time-of-course')
+const getUserBasket = require('./get-user-basket')
 
 module.exports = {
+    getUserBasket,
     uploadVideo,
     getTimeOfCourse,
     getVideoTime,

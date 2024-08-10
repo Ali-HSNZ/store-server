@@ -73,6 +73,11 @@ const AddCourseToBasketResolver = {
         const { courseId } = args
         await checkExistCourse(courseId)
 
+        const userCourse = await UserModel.findOne({ _id: user._id, courses: courseId })
+
+        if (userCourse)
+            throw createHttpError.BadRequest('این دوره در لیست دوره های خریداری شده وجود دارد')
+
         const course = await findCourseInBasket(user._id, courseId)
 
         if (course) {
